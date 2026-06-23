@@ -1,0 +1,287 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Us — Swiha Tours & Travel</title>
+  <meta name="description" content="Learn about Swiha Tours & Travel — Uganda's passionate team of local guides, naturalists and travel experts dedicated to sharing East Africa's magic.">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  <style>
+    .mission-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 28px; margin-top: 56px; }
+    .mission-card { background: var(--ivory); border-radius: var(--radius-lg); padding: 36px 28px; border-top: 3px solid var(--gold); }
+    .mission-icon { font-size: 2rem; margin-bottom: 16px; }
+    .mission-card h3 { font-size: 1.15rem; color: var(--green-dark); margin-bottom: 12px; }
+    .mission-card p { font-size: 0.875rem; color: var(--text-muted); line-height: 1.7; }
+
+    .team-section { background: var(--ivory); }
+    .team-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px; }
+    .team-card { text-align: center; }
+    .team-photo { width: 140px; height: 140px; border-radius: 50%; margin: 0 auto 20px; overflow: hidden; border: 4px solid var(--gold); background: var(--cream); display: flex; align-items: center; justify-content: center; font-size: 3rem; }
+    .team-name { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--green-dark); margin-bottom: 4px; }
+    .team-role { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold-dark); margin-bottom: 12px; }
+    .team-bio { font-size: 0.85rem; color: var(--text-muted); line-height: 1.65; }
+
+    .values-section { background: var(--green-dark); padding: 96px 0; }
+    .values-section h2 { color: var(--white); }
+    .values-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 56px; }
+    .value-item { background: rgba(255,255,255,0.06); border-radius: var(--radius-lg); padding: 32px; border: 1px solid rgba(255,255,255,0.1); }
+    .value-item h4 { color: var(--gold); font-family: 'Inter', sans-serif; font-size: 0.9rem; font-weight: 700; letter-spacing: 0.06em; margin-bottom: 10px; }
+    .value-item p { color: rgba(255,255,255,0.65); font-size: 0.875rem; line-height: 1.7; }
+
+    .certifications { background: var(--ivory); }
+    .cert-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+    .cert-item { background: var(--white); border-radius: var(--radius-lg); padding: 28px; text-align: center; box-shadow: var(--shadow-sm); }
+    .cert-logo { font-size: 2rem; margin-bottom: 12px; }
+    .cert-name { font-size: 0.85rem; font-weight: 700; color: var(--green-dark); margin-bottom: 6px; }
+    .cert-desc { font-size: 0.78rem; color: var(--text-muted); }
+
+    .history-timeline { padding: 96px 0; background: var(--white); }
+    .timeline { position: relative; padding-left: 40px; }
+    .timeline::before { content: ''; position: absolute; left: 8px; top: 0; bottom: 0; width: 2px; background: var(--cream); }
+    .timeline-item { position: relative; margin-bottom: 48px; }
+    .timeline-dot { position: absolute; left: -36px; top: 4px; width: 16px; height: 16px; background: var(--gold); border-radius: 50%; border: 3px solid var(--white); box-shadow: 0 0 0 2px var(--gold); }
+    .timeline-year { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; color: var(--gold-dark); text-transform: uppercase; margin-bottom: 6px; }
+    .timeline-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--green-dark); margin-bottom: 8px; }
+    .timeline-text { font-size: 0.875rem; color: var(--text-muted); line-height: 1.7; }
+
+    @media (max-width: 1024px) {
+      .team-grid { grid-template-columns: repeat(2, 1fr); }
+      .cert-grid { grid-template-columns: repeat(2, 1fr); }
+      .mission-grid { grid-template-columns: 1fr 1fr; }
+      .values-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      .team-grid { grid-template-columns: 1fr; }
+      .cert-grid { grid-template-columns: 1fr 1fr; }
+      .mission-grid { grid-template-columns: 1fr; }
+      .values-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-icon"><img src = "{% static 'images/logo.jpg' %}"></div>
+      <div><div class="logo-text">Swiha Tours</div><div class="logo-sub">& Travel</div></div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="{% url 'home' %}" >Home</a></li>
+      <li><a href="{% url 'about' %}" class="active">About Us</a></li>
+      <li><a href="{% url 'packages' %}">Tour Packages</a></li>
+      <li><a href="{% url 'destinations' %}">Destinations</a></li>
+      <li><a href="{% url 'gallery' %}">Gallery</a></li>
+      <li><a href="{% url 'blog' %}">Blog</a></li>
+      <li><a href="{% url 'contact' %}">Contact</a></li>
+      <li><a href="{% url 'booking' %}" class="nav-cta">Book Now</a></li>
+    </ul>
+    <div class="hamburger"><span></span><span></span><span></span></div>
+  </div>
+</nav>
+
+<div class="mobile-nav">
+  <button class="close-btn">✕</button>
+  <a href="index.html">Home</a><a href="about.html">About Us</a><a href="packages.html">Tour Packages</a>
+  <a href="destinations.html">Destinations</a><a href="gallery.html">Gallery</a>
+  <a href="blog.html">Blog</a><a href="contact.html">Contact</a><a href="booking.html">Book Now</a>
+</div>
+
+<!-- Page Hero -->
+<div class="page-hero">
+  <div class="page-hero-bg" style="background-image:url('https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=1400&q=80');"></div>
+  <div class="container">
+    <div class="page-hero-content">
+      <div class="breadcrumb"><a href="index.html">Home</a><span>/</span><span>About Us</span></div>
+      <h1>About Swiha Tours & Travel</h1>
+      <p style="color:rgba(255,255,255,0.8);margin-top:8px;font-size:1.05rem;">Ugandan at heart. World-class in service.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Intro -->
+<section class="section">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;">
+      <div class="reveal">
+        <span class="eyebrow">Our Story</span>
+        <h2 style="color:var(--green-dark);margin:12px 0 20px;">Twelve Years of Sharing Uganda's Magic</h2>
+        <p style="color:var(--text-muted);line-height:1.8;margin-bottom:16px;">Swiha Tours & Travel was founded in 2012 by a group of passionate Ugandan nature lovers, former park rangers, and hospitality professionals who shared one burning conviction: the world needed to know how extraordinary Uganda truly is.</p>
+        <p style="color:var(--text-muted);line-height:1.8;margin-bottom:16px;">Starting with just two vehicles and a handful of loyal clients, we have grown into one of Uganda's most respected tour operators — without ever losing the personal, family-like approach that defined us from day one.</p>
+        <p style="color:var(--text-muted);line-height:1.8;">Today, Swiha operates across Uganda, Rwanda, Kenya, and Tanzania, with a team of over 40 professionals dedicated to crafting journeys that go far beyond tourism — they create genuine connection.</p>
+      </div>
+      <div class="img-float-block reveal reveal-delay-1">
+        <img class="main-img" src="https://images.unsplash.com/photo-1516426122078-c23e76319801?w=700&q=80" alt="Gorilla encounter" />
+        <div class="experience-badge">
+          <div class="num">12+</div>
+          <div class="lbl">Years<br>Operating</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mission / Vision / Values mini cards -->
+    <div class="mission-grid">
+      <div class="mission-card reveal">
+        <div class="mission-icon">🎯</div>
+        <h3>Our Mission</h3>
+        <p>To deliver exceptional, responsible tourism experiences that connect travellers deeply with Uganda's wildlife, culture, and people — while contributing meaningfully to local communities and conservation.</p>
+      </div>
+      <div class="mission-card reveal reveal-delay-1">
+        <div class="mission-icon">🌍</div>
+        <h3>Our Vision</h3>
+        <p>To be East Africa's most trusted and celebrated tour operator — known equally for the quality of our experiences and the depth of our commitment to sustainable travel.</p>
+      </div>
+      <div class="mission-card reveal reveal-delay-2">
+        <div class="mission-icon">💚</div>
+        <h3>Our Promise</h3>
+        <p>Every traveller who chooses Swiha gets personalised attention, transparent pricing, expert guidance, and a journey that genuinely exceeds expectations.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Stats -->
+<div class="stats-bar">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item"><div class="stat-num" data-count="2000" data-suffix="+">2000+</div><div class="stat-label">Happy Travellers</div></div>
+      <div class="stat-item"><div class="stat-num" data-count="40" data-suffix="+">40+</div><div class="stat-label">Team Members</div></div>
+      <div class="stat-item"><div class="stat-num" data-count="4" data-suffix="">4</div><div class="stat-label">Countries Covered</div></div>
+      <div class="stat-item"><div class="stat-num" data-count="98" data-suffix="%">98%</div><div class="stat-label">Satisfaction Rate</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- Values -->
+<section class="values-section">
+  <div class="container">
+    <div class="section-header">
+      <span class="eyebrow">What We Stand For</span>
+      <h2 style="color:var(--white);margin-top:8px;">Our Core Values</h2>
+      <div class="title-line"></div>
+    </div>
+    <div class="values-grid">
+      <div class="value-item"><h4>🦁 Love for Wildlife</h4><p>We are conservationists first and tour operators second. A portion of every booking supports wildlife protection and anti-poaching efforts.</p></div>
+      <div class="value-item"><h4>🤝 Community First</h4><p>We employ local guides, partner with community-owned lodges, and source food locally wherever possible.</p></div>
+      <div class="value-item"><h4>✅ Absolute Honesty</h4><p>What we quote is what you pay. No surprise fees, no misleading inclusions. Just honest, transparent service.</p></div>
+      <div class="value-item"><h4>🌱 Eco-Responsibility</h4><p>Low-impact travel isn't a trend for us — it's a founding principle. We operate carbon-offset vehicles and use eco-certified lodges.</p></div>
+      <div class="value-item"><h4>🎓 Deep Expertise</h4><p>Our guides hold formal qualifications in wildlife guiding, ornithology, and first aid. Knowledge you can trust in the field.</p></div>
+      <div class="value-item"><h4>❤️ Genuine Hospitality</h4><p>Ugandan warmth is legendary, and we make sure every traveller feels it — from airport arrival to farewell hug at departure.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- Team -->
+<section class="section team-section">
+  <div class="container">
+    <div class="section-header center">
+      <span class="eyebrow">The People Behind the Magic</span>
+      <h2>Meet Our Team</h2>
+      <p>Local experts, certified guides, and passionate travellers — united by a love of Uganda.</p>
+      <div class="title-line"></div>
+    </div>
+    <div class="team-grid">
+      <div class="team-card reveal">
+        <div class="team-photo">👨🏿</div>
+        <div class="team-name">Robert Ssebagala</div>
+        <div class="team-role">Founder & CEO</div>
+        <div class="team-bio">Former UWA ranger with 18 years of experience in Uganda's national parks. Robert's deep knowledge of wildlife behaviour makes every safari extraordinary.</div>
+      </div>
+      <div class="team-card reveal reveal-delay-1">
+        <div class="team-photo">👩🏿</div>
+        <div class="team-name">Grace Namutebi</div>
+        <div class="team-role">Head of Operations</div>
+        <div class="team-bio">Grace ensures every itinerary is perfectly coordinated — from gorilla permit bookings to lodge reservations and airport transfers.</div>
+      </div>
+      <div class="team-card reveal reveal-delay-2">
+        <div class="team-photo">👨🏿‍🦱</div>
+        <div class="team-name">Daniel Ochieng</div>
+        <div class="team-role">Lead Safari Guide</div>
+        <div class="team-bio">Award-winning guide .and ornithologist who has led over 400 gorilla treks. Daniel speaks 5 languages and has been featured in National Geographic.</div>
+      </div>
+      <div class="team-card reveal reveal-delay-3">
+        <div class="team-photo">👩🏿‍💼</div>
+        <div class="team-name">Fatuma Nakigozi</div>
+        <div class="team-role">Client Relations Manager</div>
+        <div class="team-bio">Fatuma is your first point of contact and works tirelessly to ensure every traveller's unique needs are understood and exceeded.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- History Timeline -->
+<section class="history-timeline">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:1fr 1.4fr;gap:80px;align-items:start;">
+      <div>
+        <span class="eyebrow">Our Journey</span>
+        <h2 style="color:var(--green-dark);margin-top:12px;margin-bottom:16px;">How We Got Here</h2>
+        <p style="color:var(--text-muted);line-height:1.8;">From a dream shared over campfire stories in Bwindi to one of Uganda's most trusted travel brands — this is the Swiha story.</p>
+        <div style="margin-top:32px;">
+          <img src="https://images.unsplash.com/photo-1591825729269-caeb344f6df2?w=500&q=80" alt="Team photo" style="border-radius:var(--radius-lg);width:100%;" />
+        </div>
+      </div>
+      <div class="timeline">
+        <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-year">2012</div><div class="timeline-title">Swiha is Founded</div><div class="timeline-text">Robert Ssebagala and two friends start Swiha with 2 Land Cruisers and a vision to share Uganda's wild beauty with the world.</div></div>
+        <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-year">2014</div><div class="timeline-title">First International Clients</div><div class="timeline-text">Our first bookings from the UK and Germany arrive, and Swiha earns its first TripAdvisor Certificate of Excellence.</div></div>
+        <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-year">2016</div><div class="timeline-title">UTB Certification & Fleet Expansion</div><div class="timeline-text">Licensed by Uganda Tourism Board. Our fleet grows to 8 vehicles and we open our Kampala office on Kampala Road.</div></div>
+        <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-year">2018</div><div class="timeline-title">Rwanda & Kenya Expansion</div><div class="timeline-text">We extend our operations to Rwanda and Kenya, allowing us to offer seamless multi-country East Africa itineraries.</div></div>
+        <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-year">2020</div><div class="timeline-title">Community Conservation Fund</div><div class="timeline-text">Swiha launches the Swiha Community Conservation Fund, donating 2% of every booking to local conservation and education projects.</div></div>
+        <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-year">2024</div><div class="timeline-title">2,000 Travellers Milestone</div><div class="timeline-text">We celebrate our 2,000th happy traveller and are recognised as one of Uganda's Top 10 Tour Operators by the Uganda Tourism Board.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Certifications -->
+<section class="section certifications">
+  <div class="container">
+    <div class="section-header center">
+      <span class="eyebrow">Accreditations</span>
+      <h2>Certified & Trusted</h2>
+      <div class="title-line"></div>
+    </div>
+    <div class="cert-grid">
+      <div class="cert-item"><div class="cert-logo">🏛️</div><div class="cert-name">Uganda Tourism Board</div><div class="cert-desc">Fully licensed tour operator — Reg. UTB/TO/2012/004</div></div>
+      <div class="cert-item"><div class="cert-logo">🌍</div><div class="cert-name">ATTA Member</div><div class="cert-desc">African Travel & Tourism Association certified member</div></div>
+      <div class="cert-item"><div class="cert-logo">⭐</div><div class="cert-name">TripAdvisor Excellence</div><div class="cert-desc">Certificate of Excellence 2019, 2021, 2022, 2023</div></div>
+      <div class="cert-item"><div class="cert-logo">🌿</div><div class="cert-name">Eco-Tourism Uganda</div><div class="cert-desc">Eco-certified operator committed to sustainable practices</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- Newsletter -->
+<div class="newsletter-strip">
+  <div class="container">
+    <div class="newsletter-inner">
+      <div><h3>Stay in the Loop</h3><p>Monthly travel inspiration, conservation news, and exclusive package deals.</p></div>
+      <form class="newsletter-form" onsubmit="return false;">
+        <input type="email" placeholder="Your email address" />
+        <button type="submit">Subscribe</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="logo"><div class="logo-icon">🦍</div><div><div class="logo-text">Swiha Tours</div><div class="logo-sub">& Travel</div></div></a>
+        <p>Uganda's premier tour operator specialising in gorilla trekking, wildlife safaris, and cultural experiences across East Africa since 2012.</p>
+        <div class="footer-socials"><div class="social-btn">f</div><div class="social-btn">in</div><div class="social-btn">tw</div><div class="social-btn">yt</div><div class="social-btn">ig</div></div>
+      </div>
+      <div class="footer-col"><h4>Quick Links</h4><ul class="footer-links"><li><a href="index.html">Home</a></li><li><a href="about.html">About Us</a></li><li><a href="packages.html">Tour Packages</a></li><li><a href="destinations.html">Destinations</a></li><li><a href="gallery.html">Gallery</a></li><li><a href="blog.html">Blog</a></li></ul></div>
+      <div class="footer-col"><h4>Our Tours</h4><ul class="footer-links"><li><a href="packages.html">Gorilla Trekking</a></li><li><a href="packages.html">Wildlife Safaris</a></li><li><a href="packages.html">Chimpanzee Tracking</a></li><li><a href="packages.html">Bird Watching</a></li><li><a href="packages.html">Cultural Tours</a></li></ul></div>
+      <div class="footer-col"><h4>Get in Touch</h4><div class="footer-contact-item"><span class="icon">📍</span><span>Plot 24, Kampala Road, Kampala, Uganda</span></div><div class="footer-contact-item"><span class="icon">📞</span><span>+256 700 000 000</span></div><div class="footer-contact-item"><span class="icon">✉</span><span>info@swihatoes.com</span></div></div>
+    </div>
+    <div class="footer-bottom"><p>© 2024 Swiha Tours & Travel. All rights reserved.</p><div class="footer-bottom-links"><a href="#">Privacy Policy</a><a href="#">Terms of Service</a></div></div>
+  </div>
+</footer>
+
+<a href="https://wa.me/256700000000" class="whatsapp-float">💬</a>
+<button class="back-to-top">↑</button>
+<script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

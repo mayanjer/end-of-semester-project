@@ -1,0 +1,395 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tour Packages — Swiha Tours & Travel</title>
+  <meta name="description" content="Browse Swiha Tours' full catalogue of Uganda & East Africa safari packages — gorilla trekking, wildlife safaris, bird watching, cultural tours and more.">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  <style>
+    .filters-bar { background: var(--ivory); padding: 32px 0; border-bottom: 1px solid var(--cream); position: sticky; top: 72px; z-index: 100; }
+    .filters-inner { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+    .filter-chip { padding: 8px 18px; border-radius: 50px; border: 1.5px solid #D8D4CC; font-size: 0.82rem; font-weight: 500; color: var(--charcoal); background: var(--white); cursor: pointer; transition: var(--transition); white-space: nowrap; }
+    .filter-chip:hover, .filter-chip.active { background: var(--green-dark); color: var(--white); border-color: var(--green-dark); }
+    .filter-chip.active { font-weight: 600; }
+    .filters-count { margin-left: auto; font-size: 0.82rem; color: var(--text-muted); }
+
+    .packages-layout { display: grid; grid-template-columns: 280px 1fr; gap: 40px; align-items: start; }
+    .sidebar { background: var(--ivory); border-radius: var(--radius-lg); padding: 28px; position: sticky; top: 160px; }
+    .sidebar h4 { font-family: 'Inter', sans-serif; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--green-dark); margin-bottom: 16px; }
+    .sidebar-divider { border: none; border-top: 1px solid var(--cream); margin: 24px 0; }
+    .check-group { display: flex; flex-direction: column; gap: 10px; }
+    .check-item { display: flex; align-items: center; gap: 10px; font-size: 0.875rem; color: var(--charcoal); cursor: pointer; }
+    .check-item input[type="checkbox"] { accent-color: var(--green-dark); width: 16px; height: 16px; }
+    .price-range { display: flex; gap: 12px; }
+    .price-input { flex: 1; }
+    .price-input .form-control { padding: 10px 12px; font-size: 0.85rem; }
+
+    .packages-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+    .pkg-card { background: var(--white); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm); transition: var(--transition); display: flex; flex-direction: column; }
+    .pkg-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
+    .pkg-img { position: relative; }
+    .pkg-img img { width: 100%; height: 220px; object-fit: cover; }
+    .pkg-body { padding: 24px; flex: 1; display: flex; flex-direction: column; }
+    .pkg-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+    .pkg-tag { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 10px; border-radius: 2px; }
+    .pkg-tag-type { background: rgba(212,160,23,0.12); color: var(--gold-dark); }
+    .pkg-tag-diff { background: rgba(27,67,50,0.1); color: var(--green-mid); }
+    .pkg-title { font-family: 'Playfair Display', serif; font-size: 1.15rem; color: var(--green-dark); margin-bottom: 10px; }
+    .pkg-desc { font-size: 0.87rem; color: var(--text-muted); line-height: 1.65; margin-bottom: 16px; flex: 1; }
+    .pkg-highlights { display: flex; flex-direction: column; gap: 6px; margin-bottom: 20px; }
+    .pkg-highlight { display: flex; align-items: center; gap: 8px; font-size: 0.82rem; color: var(--text-muted); }
+    .pkg-highlight::before { content: '✓'; color: var(--gold); font-weight: 700; font-size: 0.75rem; }
+    .pkg-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 16px; border-top: 1px solid var(--cream); margin-top: auto; }
+    .pkg-meta { display: flex; gap: 16px; font-size: 0.8rem; color: var(--text-muted); }
+    .pkg-price .amount { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--green-dark); font-weight: 700; }
+    .pkg-price .from { font-size: 0.75rem; color: var(--text-muted); }
+    .pkg-price .per { font-size: 0.75rem; color: var(--text-muted); }
+
+    .sort-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; flex-wrap: wrap; gap: 12px; }
+    .sort-bar p { font-size: 0.875rem; color: var(--text-muted); }
+    .sort-select { padding: 8px 14px; border: 1.5px solid #D8D4CC; border-radius: var(--radius); font-size: 0.85rem; font-family: 'Inter', sans-serif; color: var(--charcoal); outline: none; }
+
+    .pagination { display: flex; gap: 8px; justify-content: center; margin-top: 48px; }
+    .page-btn { width: 38px; height: 38px; border: 1.5px solid #D8D4CC; border-radius: var(--radius); display: flex; align-items: center; justify-content: center; font-size: 0.875rem; cursor: pointer; transition: var(--transition); background: var(--white); color: var(--charcoal); }
+    .page-btn:hover, .page-btn.active { background: var(--green-dark); color: var(--white); border-color: var(--green-dark); }
+
+    @media (max-width: 1024px) {
+      .packages-layout { grid-template-columns: 1fr; }
+      .sidebar { position: static; }
+      .packages-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="../index.html" class="logo"><div class="logo-icon"><img src = "{% static 'images/logo.jpg' %}"></div><div><div class="logo-text">Swiha Tours</div><div class="logo-sub">& Travel</div></div></a>
+    <ul class="nav-links">
+      <li><a href="{% url 'home' %}">Home</a></li>
+      <li><a href="{% url 'about' %}">About Us</a></li>
+      <li><a href="{% url 'packages' %}" class="active">Tour Packages</a></li>
+      <li><a href="{% url 'destinations' %}">Destinations</a></li>
+      <li><a href="{% url 'gallery' %}">Gallery</a></li>
+      <li><a href="{% url 'blog' %}">Blog</a></li>
+      <li><a href="{% url 'contact' %}">Contact</a></li>
+      <li><a href="{% url 'booking' %}" class="nav-cta">Book Now</a></li>
+    </ul>
+    <div class="hamburger"><span></span><span></span><span></span></div>
+  </div>
+</nav>
+<div class="mobile-nav"><button class="close-btn">✕</button>
+  <a href="../index.html">Home</a><a href="about.html">About Us</a><a href="packages.html">Tour Packages</a>
+  <a href="destinations.html">Destinations</a><a href="gallery.html">Gallery</a>
+  <a href="blog.html">Blog</a><a href="contact.html">Contact</a><a href="booking.html">Book Now</a>
+</div>
+
+<div class="page-hero">
+  <div class="page-hero-bg" style="background-image:url('https://images.unsplash.com/photo-1516426122078-c23e76319801?w=1400&q=80');"></div>
+  <div class="container">
+    <div class="page-hero-content">
+      <div class="breadcrumb"><a href="../index.html">Home</a><span>/</span><span>Tour Packages</span></div>
+      <h1>Tour Packages</h1>
+      <p style="color:rgba(255,255,255,0.8);margin-top:8px;">85+ carefully crafted experiences across Uganda & East Africa</p>
+    </div>
+  </div>
+</div>
+
+<!-- Filter chips -->
+<div class="filters-bar">
+  <div class="container">
+    <div class="filters-inner">
+      <button class="filter-chip active" data-filter="all">All Tours</button>
+      <button class="filter-chip" data-filter="gorilla">Gorilla Trekking</button>
+      <button class="filter-chip" data-filter="wildlife">Wildlife Safari</button>
+      <button class="filter-chip" data-filter="chimp">Chimpanzee</button>
+      <button class="filter-chip" data-filter="bird">Bird Watching</button>
+      <button class="filter-chip" data-filter="cultural">Cultural</button>
+      <button class="filter-chip" data-filter="adventure">Adventure</button>
+      <button class="filter-chip" data-filter="honeymoon">Honeymoon</button>
+      <span class="filters-count">Showing 12 of 85+ tours</span>
+    </div>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+    <div class="packages-layout">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <h4>Filter Results</h4>
+        <div class="form-group">
+          <label class="form-label">Destination</label>
+          <select class="form-control">
+            <option value="">All Destinations</option>
+            <option>Bwindi Forest</option>
+            <option>Queen Elizabeth NP</option>
+            <option>Murchison Falls</option>
+            <option>Kibale Forest</option>
+            <option>Lake Mburo</option>
+            <option>Kidepo Valley</option>
+            <option>Rwenzori Mountains</option>
+            <option>Jinja</option>
+            <option>Rwanda</option>
+            <option>Kenya</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Travel Date</label>
+          <input type="date" class="form-control" />
+        </div>
+        <hr class="sidebar-divider" />
+        <h4>Duration</h4>
+        <div class="check-group">
+          <label class="check-item"><input type="checkbox" /> 1–3 Days</label>
+          <label class="check-item"><input type="checkbox" /> 4–6 Days</label>
+          <label class="check-item"><input type="checkbox" /> 7–10 Days</label>
+          <label class="check-item"><input type="checkbox" /> 10+ Days</label>
+        </div>
+        <hr class="sidebar-divider" />
+        <h4>Budget (USD/person)</h4>
+        <div class="price-range">
+          <div class="price-input"><input type="number" class="form-control" placeholder="Min" /></div>
+          <div class="price-input"><input type="number" class="form-control" placeholder="Max" /></div>
+        </div>
+        <hr class="sidebar-divider" />
+        <h4>Difficulty</h4>
+        <div class="check-group">
+          <label class="check-item"><input type="checkbox" /> Easy</label>
+          <label class="check-item"><input type="checkbox" /> Moderate</label>
+          <label class="check-item"><input type="checkbox" /> Challenging</label>
+        </div>
+        <hr class="sidebar-divider" />
+        <h4>Group Size</h4>
+        <div class="check-group">
+          <label class="check-item"><input type="checkbox" /> Solo / Couple</label>
+          <label class="check-item"><input type="checkbox" /> Small (3–6)</label>
+          <label class="check-item"><input type="checkbox" /> Group (7–15)</label>
+          <label class="check-item"><input type="checkbox" /> Large (15+)</label>
+        </div>
+        <div style="margin-top:24px;">
+          <button class="btn btn-green" style="width:100%;">Apply Filters</button>
+        </div>
+        <div style="margin-top:10px;text-align:center;">
+          <button style="background:none;border:none;font-size:0.82rem;color:var(--text-muted);cursor:pointer;">Clear All</button>
+        </div>
+      </aside>
+
+      <!-- Main -->
+      <div>
+        <div class="sort-bar">
+          <p>Showing <strong>12</strong> of 85+ tours</p>
+          <select class="sort-select">
+            <option>Sort: Recommended</option>
+            <option>Price: Low to High</option>
+            <option>Price: High to Low</option>
+            <option>Duration: Shortest First</option>
+            <option>Most Popular</option>
+          </select>
+        </div>
+
+        <div class="packages-grid" id="packagesGrid">
+
+          <div class="pkg-card reveal">
+            <div class="pkg-img">
+              <img src="https://images.unsplash.com/photo-1516426122078-c23e76319801?w=600&q=80" alt="Gorilla Trekking" />
+              <span class="badge">Best Seller</span>
+            </div>
+            <div class="pkg-body">
+              <div class="pkg-tags"><span class="pkg-tag pkg-tag-type">Gorilla Trekking</span><span class="pkg-tag pkg-tag-diff">Moderate</span></div>
+              <div class="pkg-title">5-Day Bwindi Gorilla Trek & Safari</div>
+              <div class="pkg-desc">The ultimate Uganda wildlife encounter. Spend one full hour with a mountain gorilla family in the UNESCO-listed Bwindi Impenetrable Forest.</div>
+              <div class="pkg-highlights">
+                <div class="pkg-highlight">Gorilla permit included</div>
+                <div class="pkg-highlight">Expert habituated gorilla guide</div>
+                <div class="pkg-highlight">Luxury or budget lodge options</div>
+                <div class="pkg-highlight">All park fees & transport included</div>
+              </div>
+              <div class="pkg-footer">
+                <div>
+                  <div class="pkg-meta"><span>🗓 5 Days</span><span>👥 Max 8</span></div>
+                  <div class="pkg-price"><span class="from">From</span> <span class="amount">$1,850</span> <span class="per">/person</span></div>
+                </div>
+                <a href="booking.html" class="btn btn-primary btn-sm">Book Now</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="pkg-card reveal reveal-delay-1">
+            <div class="pkg-img">
+              <img src="https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=600&q=80" alt="Queen Elizabeth Safari" />
+            </div>
+            <div class="pkg-body">
+              <div class="pkg-tags"><span class="pkg-tag pkg-tag-type">Wildlife Safari</span><span class="pkg-tag pkg-tag-diff">Easy</span></div>
+              <div class="pkg-title">4-Day Queen Elizabeth National Park</div>
+              <div class="pkg-desc">Experience Uganda's most popular park — tree-climbing lions, massive elephant herds, and the legendary Kazinga Channel boat cruise.</div>
+              <div class="pkg-highlights">
+                <div class="pkg-highlight">Kazinga Channel boat safari</div>
+                <div class="pkg-highlight">Tree-climbing lion search</div>
+                <div class="pkg-highlight">Chimp tracking in Kyambura</div>
+                <div class="pkg-highlight">Lodge accommodation included</div>
+              </div>
+              <div class="pkg-footer">
+                <div>
+                  <div class="pkg-meta"><span>🗓 4 Days</span><span>👥 Max 10</span></div>
+                  <div class="pkg-price"><span class="from">From</span> <span class="amount">$1,200</span> <span class="per">/person</span></div>
+                </div>
+                <a href="booking.html" class="btn btn-primary btn-sm">Book Now</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="pkg-card reveal">
+            <div class="pkg-img">
+              <img src="https://images.unsplash.com/photo-1504432842672-1a79f78e4084?w=600&q=80" alt="Kibale Chimps" />
+              <span class="badge badge-green">New</span>
+            </div>
+            <div class="pkg-body">
+              <div class="pkg-tags"><span class="pkg-tag pkg-tag-type">Primate Safari</span><span class="pkg-tag pkg-tag-diff">Moderate</span></div>
+              <div class="pkg-title">3-Day Kibale Chimpanzee Trek</div>
+              <div class="pkg-desc">Kibale Forest is home to the highest density of chimpanzees in East Africa. Spend hours with our closest relatives in their natural habitat.</div>
+              <div class="pkg-highlights">
+                <div class="pkg-highlight">Chimp tracking permit included</div>
+                <div class="pkg-highlight">12 other primate species</div>
+                <div class="pkg-highlight">Bigodi Wetland walk</div>
+              </div>
+              <div class="pkg-footer">
+                <div>
+                  <div class="pkg-meta"><span>🗓 3 Days</span><span>👥 Max 6</span></div>
+                  <div class="pkg-price"><span class="from">From</span> <span class="amount">$980</span> <span class="per">/person</span></div>
+                </div>
+                <a href="booking.html" class="btn btn-primary btn-sm">Book Now</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="pkg-card reveal reveal-delay-1">
+            <div class="pkg-img">
+              <img src="https://images.unsplash.com/photo-1591825729269-caeb344f6df2?w=600&q=80" alt="Murchison Falls" />
+            </div>
+            <div class="pkg-body">
+              <div class="pkg-tags"><span class="pkg-tag pkg-tag-type">Wildlife Safari</span><span class="pkg-tag pkg-tag-diff">Easy</span></div>
+              <div class="pkg-title">4-Day Murchison Falls Adventure</div>
+              <div class="pkg-desc">Watch the world's most powerful waterfall and take a Nile cruise to spot hippos, crocodiles, and extraordinary birdlife.</div>
+              <div class="pkg-highlights">
+                <div class="pkg-highlight">Nile Delta boat cruise</div>
+                <div class="pkg-highlight">Top of the Falls hike</div>
+                <div class="pkg-highlight">Game drives at dawn and dusk</div>
+              </div>
+              <div class="pkg-footer">
+                <div>
+                  <div class="pkg-meta"><span>🗓 4 Days</span><span>👥 Max 12</span></div>
+                  <div class="pkg-price"><span class="from">From</span> <span class="amount">$1,100</span> <span class="per">/person</span></div>
+                </div>
+                <a href="booking.html" class="btn btn-primary btn-sm">Book Now</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="pkg-card reveal">
+            <div class="pkg-img">
+              <img src="https://images.unsplash.com/photo-1562159948-7e776f7a5e5c?w=600&q=80" alt="Jinja Adventure" />
+            </div>
+            <div class="pkg-body">
+              <div class="pkg-tags"><span class="pkg-tag pkg-tag-type">Adventure</span><span class="pkg-tag pkg-tag-diff">Challenging</span></div>
+              <div class="pkg-title">2-Day Jinja Nile Source Adventure</div>
+              <div class="pkg-desc">The adrenaline capital of East Africa — white-water rafting, bungee jumping, quad biking, and kayaking on the great River Nile.</div>
+              <div class="pkg-highlights">
+                <div class="pkg-highlight">Grade 5 white-water rafting</div>
+                <div class="pkg-highlight">Source of the Nile visit</div>
+                <div class="pkg-highlight">Optional bungee jump</div>
+              </div>
+              <div class="pkg-footer">
+                <div>
+                  <div class="pkg-meta"><span>🗓 2 Days</span><span>👥 Max 15</span></div>
+                  <div class="pkg-price"><span class="from">From</span> <span class="amount">$380</span> <span class="per">/person</span></div>
+                </div>
+                <a href="booking.html" class="btn btn-primary btn-sm">Book Now</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="pkg-card reveal reveal-delay-1">
+            <div class="pkg-img">
+              <img src="https://images.unsplash.com/photo-1516426122078-c23e76319801?w=600&q=80" alt="Ultimate Uganda" />
+              <span class="badge">Premium</span>
+            </div>
+            <div class="pkg-body">
+              <div class="pkg-tags"><span class="pkg-tag pkg-tag-type">Gorilla + Safari</span><span class="pkg-tag pkg-tag-diff">Moderate</span></div>
+              <div class="pkg-title">10-Day Ultimate Uganda Safari</div>
+              <div class="pkg-desc">The definitive Uganda experience — gorillas, chimps, tree-climbing lions, Murchison Falls, and Lake Mburo in one epic journey.</div>
+              <div class="pkg-highlights">
+                <div class="pkg-highlight">Gorilla & chimp permits included</div>
+                <div class="pkg-highlight">4 national parks</div>
+                <div class="pkg-highlight">Mix of luxury lodges</div>
+                <div class="pkg-highlight">Airport transfers & all meals</div>
+              </div>
+              <div class="pkg-footer">
+                <div>
+                  <div class="pkg-meta"><span>🗓 10 Days</span><span>👥 Max 8</span></div>
+                  <div class="pkg-price"><span class="from">From</span> <span class="amount">$3,800</span> <span class="per">/person</span></div>
+                </div>
+                <a href="booking.html" class="btn btn-primary btn-sm">Book Now</a>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /packages-grid -->
+
+        <div class="pagination">
+          <button class="page-btn active">1</button>
+          <button class="page-btn">2</button>
+          <button class="page-btn">3</button>
+          <button class="page-btn">4</button>
+          <button class="page-btn">→</button>
+        </div>
+
+        <!-- Custom tour CTA -->
+        <div style="margin-top:56px;background:var(--cream);border-radius:var(--radius-lg);padding:40px;text-align:center;">
+          <span class="eyebrow">Can't find exactly what you're looking for?</span>
+          <h3 style="color:var(--green-dark);margin:12px 0;">Let Us Build a Custom Tour for You</h3>
+          <p style="color:var(--text-muted);margin-bottom:28px;max-width:480px;margin-left:auto;margin-right:auto;">Tell us your dream, dates, and budget — we'll craft a personalised itinerary within 24 hours, completely free of charge.</p>
+          <a href="contact.html" class="btn btn-green">Request Custom Itinerary →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="newsletter-strip">
+  <div class="container">
+    <div class="newsletter-inner">
+      <div><h3>Early Bird Deals & New Package Alerts</h3><p>Subscribe and get 10% off your first booking.</p></div>
+      <form class="newsletter-form" onsubmit="return false;"><input type="email" placeholder="Your email address" /><button type="submit">Subscribe</button></form>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand"><a href="../index.html" class="logo"><div class="logo-icon">🦍</div><div><div class="logo-text">Swiha Tours</div><div class="logo-sub">& Travel</div></div></a><p>Uganda's premier tour operator since 2012.</p><div class="footer-socials"><div class="social-btn">f</div><div class="social-btn">in</div><div class="social-btn">ig</div></div></div>
+      <div class="footer-col"><h4>Quick Links</h4><ul class="footer-links"><li><a href="../index.html">Home</a></li><li><a href="about.html">About Us</a></li><li><a href="packages.html">Tour Packages</a></li><li><a href="destinations.html">Destinations</a></li></ul></div>
+      <div class="footer-col"><h4>Our Tours</h4><ul class="footer-links"><li><a href="#">Gorilla Trekking</a></li><li><a href="#">Wildlife Safaris</a></li><li><a href="#">Chimp Tracking</a></li><li><a href="#">Bird Watching</a></li></ul></div>
+      <div class="footer-col"><h4>Contact</h4><div class="footer-contact-item"><span class="icon">📞</span><span>+256 700 000 000</span></div><div class="footer-contact-item"><span class="icon">✉</span><span>info@swihatoes.com</span></div></div>
+    </div>
+    <div class="footer-bottom"><p>© 2024 Swiha Tours & Travel. All rights reserved.</p><div class="footer-bottom-links"><a href="#">Privacy Policy</a><a href="#">Terms</a></div></div>
+  </div>
+</footer>
+
+<a href="https://wa.me/256700000000" class="whatsapp-float">💬</a>
+<button class="back-to-top">↑</button>
+<script src="{% static 'js/main.js' %}"></script>
+<script>
+  // Filter chips — frontend only (backend will filter real data)
+  document.querySelectorAll('.filter-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>

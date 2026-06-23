@@ -1,0 +1,666 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Swiha Tours & Travel — Discover Uganda & East Africa</title>
+  <meta name="description" content="Swiha Tours & Travel offers unforgettable safari experiences, gorilla trekking, wildlife tours, and cultural adventures across Uganda and East Africa.">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  <style>
+    /* ── Home-specific styles ── */
+    .hero-home {
+      min-height: 100vh;
+      position: relative;
+      display: flex;
+      align-items: center;
+      background: linear-gradient(135deg, #1B4332 0%, #2D6A4F 40%, #1a3a2a 100%);
+      overflow: hidden;
+    }
+    .hero-home::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url('/static/images/group-image.jpg') center/cover no-repeat;
+      opacity: 0.38;
+    }
+    .hero-home::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(27,67,50,0.85) 0%, rgba(27,67,50,0.4) 55%, rgba(0,0,0,0.15) 100%);
+    }
+    .hero-content-wrap {
+      position: relative;
+      z-index: 2;
+      max-width: 680px;
+    }
+    .hero-content-wrap .eyebrow { margin-bottom: 16px; font-size: 0.78rem; }
+    .hero-content-wrap h1 { color: var(--white); margin-bottom: 20px; }
+    .hero-content-wrap h1 em { font-style: italic; color: var(--gold); }
+    .hero-content-wrap p { color: rgba(255,255,255,0.82); font-size: 1.1rem; line-height: 1.75; margin-bottom: 36px; max-width: 500px; }
+    .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 56px; }
+    .hero-scroll { display: flex; align-items: center; gap: 12px; color: rgba(255,255,255,0.55); font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; }
+    .scroll-line { width: 40px; height: 1.5px; background: rgba(255,255,255,0.35); }
+    .hero-trust { display: flex; gap: 32px; flex-wrap: wrap; margin-top: 0; }
+    .trust-item { display: flex; align-items: center; gap: 8px; color: rgba(255,255,255,0.7); font-size: 0.82rem; }
+    .trust-icon { color: var(--gold); font-size: 1rem; }
+
+    /* Search */
+    .search-wrap { background: var(--ivory); padding: 40px 0; }
+
+    /* Features strip */
+    .features-strip { background: var(--cream); padding: 72px 0; }
+    .features-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px; }
+    .feature-item { text-align: center; padding: 32px 20px; background: var(--white); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); transition: var(--transition); }
+    .feature-item:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
+    .feature-icon { font-size: 2.2rem; margin-bottom: 16px; }
+    .feature-item h4 { font-family: 'Playfair Display', serif; color: var(--green-dark); margin-bottom: 8px; }
+    .feature-item p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.65; }
+
+    /* About */
+    .about-home { background: var(--white); }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .about-imgs { position: relative; padding-bottom: 48px; padding-right: 48px; }
+    .about-imgs .img1 { border-radius: var(--radius-lg); width: 85%; }
+    .about-imgs .img2 { position: absolute; bottom: 0; right: 0; width: 55%; border-radius: var(--radius-lg); border: 5px solid var(--white); box-shadow: var(--shadow-md); }
+    .about-content .eyebrow { display: block; margin-bottom: 12px; }
+    .about-content h2 { color: var(--green-dark); margin-bottom: 20px; }
+    .about-content p { color: var(--text-muted); line-height: 1.8; margin-bottom: 16px; }
+    .about-features { display: flex; gap: 24px; margin: 28px 0 36px; flex-wrap: wrap; }
+    .about-feat { display: flex; align-items: center; gap: 8px; font-size: 0.875rem; font-weight: 600; color: var(--green-dark); }
+    .about-feat::before { content: '✓'; display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; background: var(--gold); border-radius: 50%; color: var(--green-dark); font-size: 0.65rem; font-weight: 800; flex-shrink: 0; }
+
+    /* Tours */
+    .tours-section { background: var(--ivory); }
+
+    /* Destinations */
+    .destinations-section { background: var(--white); }
+    .dest-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; grid-template-rows: auto auto; gap: 16px; }
+    .dest-grid .dest-card:first-child { grid-row: 1 / 3; }
+    .dest-grid .dest-card:first-child img { aspect-ratio: auto; height: 100%; }
+
+    /* Why us */
+    .why-section { background: var(--green-dark); padding: 96px 0; }
+    .why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .why-content h2 { color: var(--white); margin-bottom: 20px; }
+    .why-content .eyebrow { margin-bottom: 12px; display: block; }
+    .why-content p { color: rgba(255,255,255,0.72); line-height: 1.8; margin-bottom: 36px; }
+    .why-list { display: flex; flex-direction: column; gap: 20px; }
+    .why-item { display: flex; gap: 16px; }
+    .why-num { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700; color: var(--gold); opacity: 0.4; flex-shrink: 0; line-height: 1; }
+    .why-item h4 { color: var(--white); margin-bottom: 6px; font-family: 'Inter', sans-serif; font-size: 0.95rem; font-weight: 600; }
+    .why-item p { color: rgba(255,255,255,0.6); font-size: 0.875rem; line-height: 1.65; }
+    .why-img img { border-radius: var(--radius-lg); width: 100%; }
+
+    /* Testimonials */
+    .testimonials-section { background: var(--ivory); }
+
+    /* Blog */
+    .blog-section { background: var(--white); }
+
+    /* Partners */
+    .partners-section { background: var(--cream); padding: 56px 0; }
+    .partners-inner { text-align: center; }
+    .partners-inner p { color: var(--text-muted); font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 32px; }
+    .partners-logos { display: flex; align-items: center; justify-content: center; gap: 48px; flex-wrap: wrap; }
+    .partner-logo { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: #AAAAAA; letter-spacing: 0.06em; transition: var(--transition); }
+    .partner-logo:hover { color: var(--green-dark); }
+
+    @media (max-width: 1024px) {
+      .features-grid { grid-template-columns: repeat(2, 1fr); }
+      .about-grid { grid-template-columns: 1fr; gap: 48px; }
+      .why-grid { grid-template-columns: 1fr; gap: 48px; }
+      .dest-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+      .dest-grid .dest-card:first-child { grid-row: auto; }
+      .dest-grid .dest-card:first-child img { aspect-ratio: 3/4; height: auto; }
+    }
+    @media (max-width: 768px) {
+      .features-grid { grid-template-columns: 1fr; }
+      .about-grid { gap: 40px; }
+      .dest-grid { grid-template-columns: 1fr; }
+      .why-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══ NAVBAR ══════════════════════════════════ -->
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-icon"><img src = "/static/images/logo.jpg"></div>
+      <div>
+        <div class="logo-text">Swiha Tours</div>
+        <div class="logo-sub">& Travel</div>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="{% url 'home' %}" class="active">Home</a></li>
+      <li><a href="{% url 'about' %}">About Us</a></li>
+      <li><a href="{% url 'packages' %}">Tour Packages</a></li>
+      <li><a href="{% url 'destinations' %}">Destinations</a></li>
+      <li><a href="{% url 'gallery' %}">Gallery</a></li>
+      <li><a href="{% url 'blog' %}">Blog</a></li>
+      <li><a href="{% url 'contact' %}">Contact</a></li>
+      <li><a href="{% url 'booking' %}" class="nav-cta">Book Now</a></li>
+    </ul>
+    <div class="hamburger" id="hamburger">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile nav -->
+<div class="mobile-nav" id="mobileNav">
+  <button class="close-btn">✕</button>
+  <a href="index.html">Home</a>
+  <a href="about.html">About Us</a>
+  <a href="packages.html">Tour Packages</a>
+  <a href="destinations.html">Destinations</a>
+  <a href="gallery.html">Gallery</a>
+  <a href="blog.html">Blog</a>
+  <a href="contact.html">Contact</a>
+  <a href="booking.html">Book Now</a>
+</div>
+
+<!-- ══ HERO ════════════════════════════════════ -->
+<section class="hero-home">
+  <div class="container">
+    <div class="hero-content-wrap">
+      <span class="eyebrow">Uganda & East Africa's Finest</span>
+      <h1>Discover the <em>Pearl of Africa</em> Like Never Before</h1>
+      <p>From gorilla treks in Bwindi to the vast savannahs of Queen Elizabeth — Swiha Tours crafts personalised journeys that go beyond the ordinary.</p>
+      <div class="hero-btns">
+        <a href="packages.html" class="btn btn-primary">Explore Packages ↗</a>
+        <a href="contact.html" class="btn btn-outline">Plan My Trip</a>
+      </div>
+      <div class="hero-trust">
+        <div class="trust-item"><span class="trust-icon">★</span> 4.9/5 Rating</div>
+        <div class="trust-item"><span class="trust-icon">✓</span> Licensed Tour Operator</div>
+        <div class="trust-item"><span class="trust-icon">♥</span> 2,000+ Happy Travellers</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SEARCH BAR ═══════════════════════════════ -->
+<div class="search-wrap">
+  <div class="container">
+    <form class="search-bar" id="tourSearchForm">
+      <div class="form-group">
+        <label class="form-label">Destination</label>
+        <select class="form-control" name="destination">
+          <option value="">All Destinations</option>
+          <option>Bwindi Forest</option>
+          <option>Queen Elizabeth NP</option>
+          <option>Murchison Falls</option>
+          <option>Kibale Forest</option>
+          <option>Lake Mburo</option>
+          <option>Kidepo Valley</option>
+          <option>Rwenzori Mountains</option>
+          <option>Jinja — Source of the Nile</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Tour Type</label>
+        <select class="form-control" name="type">
+          <option value="">All Types</option>
+          <option>Gorilla Trekking</option>
+          <option>Wildlife Safari</option>
+          <option>Bird Watching</option>
+          <option>Cultural Tour</option>
+          <option>Adventure & Hiking</option>
+          <option>City & Heritage</option>
+          <option>Honeymoon Package</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Travel Date</label>
+        <input type="date" class="form-control" name="date" min="">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Guests</label>
+        <select class="form-control" name="guests">
+          <option>1 Person</option>
+          <option>2 People</option>
+          <option>3–5 People</option>
+          <option>6–10 People</option>
+          <option>10+ People</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-green" style="padding:12px 28px;">Search Tours</button>
+    </form>
+  </div>
+</div>
+
+<!-- ══ FEATURES STRIP ═══════════════════════════ -->
+<section class="features-strip">
+  <div class="container">
+    <div class="features-grid">
+      <div class="feature-item reveal">
+        <div class="feature-icon">🦁</div>
+        <h4>Expert Local Guides</h4>
+        <p>Our guides are born and bred in Uganda, bringing unmatched knowledge and passion to every adventure.</p>
+      </div>
+      <div class="feature-item reveal reveal-delay-1">
+        <div class="feature-icon">🛡️</div>
+        <h4>Safe & Certified</h4>
+        <p>Licensed by Uganda Tourism Board and ATTA-certified, with full travel insurance support.</p>
+      </div>
+      <div class="feature-item reveal reveal-delay-2">
+        <div class="feature-icon">🎯</div>
+        <h4>Tailor-Made Tours</h4>
+        <p>Every itinerary is built around your interests, schedule, and budget — no cookie-cutter experiences.</p>
+      </div>
+      <div class="feature-item reveal reveal-delay-3">
+        <div class="feature-icon">💚</div>
+        <h4>Eco-Responsible</h4>
+        <p>We protect the wildlife and habitats that make Uganda extraordinary through responsible tourism.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ STATS ═════════════════════════════════════ -->
+<div class="stats-bar">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-num" data-count="2000" data-suffix="+">2000+</div>
+        <div class="stat-label">Happy Travellers</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" data-count="12" data-suffix="">12</div>
+        <div class="stat-label">Years of Experience</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" data-count="85" data-suffix="+">85+</div>
+        <div class="stat-label">Tour Packages</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" data-count="49" data-suffix="/50">49/50</div>
+        <div class="stat-label">Customer Satisfaction</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ ABOUT (HOME SNIPPET) ═════════════════════ -->
+<section class="section about-home">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-imgs reveal">
+        <img class="img1" src="https://images.unsplash.com/photo-1516426122078-c23e76319801?w=700&q=80" alt="Gorilla trekking in Uganda" />
+        <img class="img2" src="https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=400&q=80" alt="Sunset safari" />
+        <div class="experience-badge">
+          <div class="num">12</div>
+          <div class="lbl">Years of<br>Excellence</div>
+        </div>
+      </div>
+      <div class="about-content reveal reveal-delay-1">
+        <span class="eyebrow">Our Story</span>
+        <h2>Born from a Love of Uganda's Wild Beauty</h2>
+        <p>Founded in 2012, Swiha Tours & Travel was built on a simple belief: the best journeys are shaped by people who truly love where they're from. Our team of passionate Ugandan guides, naturalists, and hospitality professionals bring that love to every single trip.</p>
+        <p>We specialise in gorilla trekking, wildlife safaris, bird watching, and cultural immersion experiences that leave you with a deep connection to East Africa's most extraordinary destinations.</p>
+        <div class="about-features">
+          <div class="about-feat">Gorilla Permits Sorted</div>
+          <div class="about-feat">Airport Transfers</div>
+          <div class="about-feat">All-Inclusive Packages</div>
+          <div class="about-feat">24/7 Support</div>
+        </div>
+        <a href="about.html" class="btn btn-green">Our Full Story →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TOUR PACKAGES ═════════════════════════════ -->
+<section class="section tours-section">
+  <div class="container">
+    <div class="section-header center">
+      <span class="eyebrow">Curated Experiences</span>
+      <h2>Our Most Popular Tours</h2>
+      <p>Handpicked journeys that showcase the very best of Uganda and East Africa.</p>
+      <div class="title-line"></div>
+    </div>
+    <div class="grid-3">
+
+      <div class="card reveal">
+        <div class="card-img">
+          <img src="https://images.unsplash.com/photo-1516426122078-c23e76319801?w=600&q=80" alt="Gorilla Trekking" />
+          <span class="badge">Best Seller</span>
+        </div>
+        <div class="card-body">
+          <span class="card-tag">Gorilla Trekking</span>
+          <div class="card-title">Bwindi Gorilla Trek & Safari</div>
+          <div class="card-text">Track mountain gorillas in Bwindi Impenetrable Forest — a face-to-face encounter you'll remember for a lifetime.</div>
+          <div class="card-meta">
+            <span>🗓 5 Days</span>
+            <span>📍 Bwindi Forest</span>
+            <span>👥 2–8 People</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div class="card-price">
+              <span class="from">From</span>
+              <span class="amount">$1,850</span>
+              <span class="per">/person</span>
+            </div>
+            <a href="packages.html" class="btn btn-primary btn-sm">View Tour</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card reveal reveal-delay-1">
+        <div class="card-img">
+          <img src="https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=600&q=80" alt="Queen Elizabeth Safari" />
+        </div>
+        <div class="card-body">
+          <span class="card-tag">Wildlife and Safari</span>
+          <div class="card-title">Classic Safari Package</div>
+          <div class="card-text">Witness the tree-climbing lions, elephant herds, and legendary Kazinga Channel boat cruise.</div>
+          <div class="card-meta">
+            <span>🗓 4 Days</span>
+            <span>📍 QENP</span>
+            <span>👥 2–10 People</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div class="card-price">
+              <span class="from">From</span>
+              <span class="amount">$1,200</span>
+              <span class="per">/person</span>
+            </div>
+            <a href="packages.html" class="btn btn-primary btn-sm">View Tour</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card reveal reveal-delay-2">
+        <div class="card-img">
+          <img src="https://images.unsplash.com/photo-1504432842672-1a79f78e4084?w=600&q=80" alt="Chimpanzee Trekking" />
+          <span class="badge badge-green">New</span>
+        </div>
+        <div class="card-body">
+          <span class="card-tag">Primate Safari</span>
+          <div class="card-title">Kibale Chimpanzee Trek</div>
+          <div class="card-text">Join our primatologists in Kibale Forest to spend time with chimpanzees and 12 other primate species.</div>
+          <div class="card-meta">
+            <span>🗓 3 Days</span>
+            <span>📍 Kibale Forest</span>
+            <span>👥 2–6 People</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div class="card-price">
+              <span class="from">From</span>
+              <span class="amount">$980</span>
+              <span class="per">/person</span>
+            </div>
+            <a href="packages.html" class="btn btn-primary btn-sm">View Tour</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div style="text-align:center;margin-top:48px;">
+      <a href="packages.html" class="btn btn-green">View All 85+ Packages →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ DESTINATIONS ══════════════════════════════ -->
+<section class="section destinations-section">
+  <div class="container">
+    <div class="section-header center">
+      <span class="eyebrow">Where We Go</span>
+      <h2>Top Destinations</h2>
+      <p>From ancient forests to crater lakes — Uganda's landscapes are endlessly captivating.</p>
+      <div class="title-line"></div>
+    </div>
+    <div class="dest-grid">
+      <div class="dest-card">
+        <img src="https://images.unsplash.com/photo-1516426122078-c23e76319801?w=800&q=80" alt="Bwindi Forest" />
+        <div class="dest-overlay">
+          <div class="dest-name">Bwindi Impenetrable Forest</div>
+          <div class="dest-tours">12 tours available</div>
+          <a href="destinations.html" class="dest-arrow">Explore ↗</a>
+        </div>
+      </div>
+      <div class="dest-card">
+        <img src="https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=500&q=80" alt="Queen Elizabeth NP" />
+        <div class="dest-overlay">
+          <div class="dest-name">Queen Elizabeth NP</div>
+          <div class="dest-tours">9 tours available</div>
+          <a href="destinations.html" class="dest-arrow">Explore ↗</a>
+        </div>
+      </div>
+      <div class="dest-card">
+        <img src="https://images.unsplash.com/photo-1504432842672-1a79f78e4084?w=500&q=80" alt="Murchison Falls" />
+        <div class="dest-overlay">
+          <div class="dest-name">Murchison Falls</div>
+          <div class="dest-tours">8 tours available</div>
+          <a href="destinations.html" class="dest-arrow">Explore ↗</a>
+        </div>
+      </div>
+      <div class="dest-card">
+        <img src="https://images.unsplash.com/photo-1562159948-7e776f7a5e5c?w=500&q=80" alt="Jinja" />
+        <div class="dest-overlay">
+          <div class="dest-name">Jinja — Nile Source</div>
+          <div class="dest-tours">6 tours available</div>
+          <a href="destinations.html" class="dest-arrow">Explore ↗</a>
+        </div>
+      </div>
+      <div class="dest-card">
+        <img src="https://images.unsplash.com/photo-1591825729269-caeb344f6df2?w=500&q=80" alt="Kidepo Valley" />
+        <div class="dest-overlay">
+          <div class="dest-name">Kidepo Valley</div>
+          <div class="dest-tours">5 tours available</div>
+          <a href="destinations.html" class="dest-arrow">Explore ↗</a>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:40px;">
+      <a href="destinations.html" class="btn btn-green">All Destinations →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ WHY US ═════════════════════════════════════ -->
+<section class="why-section">
+  <div class="container">
+    <div class="why-grid">
+      <div class="why-content">
+        <span class="eyebrow">Why Swiha</span>
+        <h2>We Don't Just Show You Uganda — We Share It</h2>
+        <p>Every member of our team grew up here. We know the hidden paths, the best viewpoints at golden hour, and the village elders who'll share stories no guidebook can capture.</p>
+        <div class="why-list">
+          <div class="why-item">
+            <div class="why-num">01</div>
+            <div>
+              <h4>Gorilla Permit Specialists</h4>
+              <p>We secure your permits well in advance and handle all paperwork so you never miss out.</p>
+            </div>
+          </div>
+          <div class="why-item">
+            <div class="why-num">02</div>
+            <div>
+              <h4>Flexible Payment Plans</h4>
+              <p>Book with a 30% deposit and pay the balance 21 days before travel. No hidden fees.</p>
+            </div>
+          </div>
+          <div class="why-item">
+            <div class="why-num">03</div>
+            <div>
+              <h4>24/7 In-Country Support</h4>
+              <p>A dedicated local coordinator is always reachable throughout your journey.</p>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:36px;">
+          <a href="about.html" class="btn btn-primary">Learn More About Us</a>
+        </div>
+      </div>
+      <div class="why-img reveal">
+        <img src="https://images.unsplash.com/photo-1591825729269-caeb344f6df2?w=700&q=80" alt="Safari landscape" style="border-radius:12px;width:100%;" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TESTIMONIALS ══════════════════════════════ -->
+<section class="section testimonials-section">
+  <div class="container">
+    <div class="section-header center">
+      <span class="eyebrow">Traveller Stories</span>
+      <h2>What Our Guests Say</h2>
+      <div class="title-line"></div>
+    </div>
+    <div class="grid-3">
+      <div class="testimonial-card reveal">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">Tracking the gorillas was the most profound wildlife experience of our lives. Swiha's guide Daniel knew exactly where to go, and kept us completely safe the entire time.</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar" style="background:#D4A017;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;">S</div>
+          <div>
+            <div class="testimonial-name">Sarah & Mark Thompson</div>
+            <div class="testimonial-origin">United Kingdom 🇬🇧</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal reveal-delay-1">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">From airport pickup to the final goodbye, Swiha handled everything flawlessly. The Queen Elizabeth safari exceeded all expectations — tree-climbing lions on our very first game drive!</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar" style="background:#2D6A4F;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;">J</div>
+          <div>
+            <div class="testimonial-name">Jean-Paul Dubois</div>
+            <div class="testimonial-origin">France 🇫🇷</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal reveal-delay-2">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">I was nervous travelling solo to Africa, but Swiha made me feel safe and welcomed from the moment I landed in Entebbe. The 10-day tour was simply magical.</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar" style="background:#1B4332;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;">A</div>
+          <div>
+            <div class="testimonial-name">Aisha Nakamura</div>
+            <div class="testimonial-origin">Japan 🇯🇵</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ NEWSLETTER ════════════════════════════════ -->
+<div class="newsletter-strip">
+  <div class="container">
+    <div class="newsletter-inner">
+      <div>
+        <h3>Get Travel Inspiration & Exclusive Deals</h3>
+        <p>Join 8,000+ travellers who receive our monthly Uganda travel newsletter.</p>
+      </div>
+      <form class="newsletter-form" onsubmit="return false;">
+        <input type="email" placeholder="Your email address" />
+        <button type="submit">Subscribe</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PARTNERS ══════════════════════════════════ -->
+<section class="partners-section">
+  <div class="container">
+    <div class="partners-inner">
+      <p>Trusted & Certified By</p>
+      <div class="partners-logos">
+        <span class="partner-logo">Uganda Tourism Board</span>
+        <span class="partner-logo">ATTA</span>
+        <span class="partner-logo">Uganda Wildlife Authority</span>
+        <span class="partner-logo">Tripadvisor</span>
+        <span class="partner-logo">UNWTO</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ════════════════════════════════════ -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="logo">
+          <div class="logo-icon"><img src="static/images/logo.jpg"></div>
+          <div>
+            <div class="logo-text">Swiha Tours</div>
+            <div class="logo-sub">& Travel</div>
+          </div>
+        </a>
+        <p>Uganda's premier tour operator specialising in gorilla trekking, wildlife safaris, and cultural experiences across East Africa since 2012.</p>
+        <div class="footer-socials">
+          <div class="social-btn">f</div>
+          <div class="social-btn">in</div>
+          <div class="social-btn">tw</div>
+          <div class="social-btn">yt</div>
+          <div class="social-btn">ig</div>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="{% url 'about' %}">About Us</a></li>
+          <li><a href="{% url 'packages' %}">Tour Packages</a></li>
+          <li><a href="{% url 'destinations' %}">Destinations</a></li>
+          <li><a href="{% url 'gallery' %}">Photo Gallery</a></li>
+          <li><a href="{% url 'blog' %}">Travel Blog</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Our Tours</h4>
+        <ul class="footer-links">
+          <li><a href="packages.html">Gorilla Trekking</a></li>
+          <li><a href="packages.html">Wildlife Safaris</a></li>
+          <li><a href="packages.html">Chimpanzee Tracking</a></li>
+          <li><a href="packages.html">Bird Watching</a></li>
+          <li><a href="packages.html">Cultural Tours</a></li>
+          <li><a href="packages.html">Honeymoon Packages</a></li>
+          <li><a href="packages.html">Group Tours</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Get in Touch</h4>
+        <div class="footer-contact-item"><span class="icon">📍</span><span>Plot 24, Kampala Road, Kampala, Uganda</span></div>
+        <div class="footer-contact-item"><span class="icon">📞</span><span>+256 700 000 000<br>+256 772 000 000</span></div>
+        <div class="footer-contact-item"><span class="icon">✉</span><span>info@swihatoes.com</span></div>
+        <div class="footer-contact-item"><span class="icon">🕐</span><span>Mon–Sat: 8am – 6pm EAT</span></div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2024 Swiha Tours & Travel. All rights reserved.</p>
+      <div class="footer-bottom-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Cancellation Policy</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Floating buttons -->
+<a href="https://wa.me/256700000000" class="whatsapp-float" title="Chat on WhatsApp">💬</a>
+<button class="back-to-top" aria-label="Back to top">↑</button>
+
+<script src="static/js/main.js"></script>
+<script>
+  // Set min date for search form
+  document.querySelector('input[type="date"]').min = new Date().toISOString().split('T')[0];
+
+  // Tour search redirect (frontend only — backend will handle actual filtering)
+  document.getElementById('tourSearchForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    window.location.href = 'packages.html';
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,281 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Destinations — Swiha Tours & Travel</title>
+  <meta name="description" content="Explore Uganda and East Africa's most breathtaking destinations — from Bwindi's gorilla forests to Murchison Falls, Jinja and beyond.">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  <style>
+    .dest-detail-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; margin-top: 24px; }
+    .dest-full-card { background: var(--white); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm); transition: var(--transition); }
+    .dest-full-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+    .dest-full-img { position: relative; overflow: hidden; }
+    .dest-full-img img { width: 100%; height: 260px; object-fit: cover; transition: transform 0.5s ease; }
+    .dest-full-card:hover .dest-full-img img { transform: scale(1.07); }
+    .dest-full-body { padding: 24px; }
+    .dest-full-body h3 { font-size: 1.2rem; color: var(--green-dark); margin-bottom: 8px; }
+    .dest-full-body p { font-size: 0.875rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 16px; }
+    .dest-facts { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 16px; }
+    .dest-fact { font-size: 0.78rem; background: var(--ivory); color: var(--charcoal); padding: 5px 10px; border-radius: 2px; font-weight: 500; }
+    .dest-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 16px; border-top: 1px solid var(--cream); }
+    .dest-tours-count { font-size: 0.82rem; color: var(--text-muted); }
+    .dest-tours-count strong { color: var(--green-dark); }
+
+    .region-tabs { background: var(--ivory); padding: 20px 0; border-bottom: 1px solid var(--cream); position: sticky; top: 72px; z-index: 50; }
+    .region-tabs .container { display: flex; gap: 0; }
+    .region-tab { padding: 10px 24px; font-size: 0.875rem; font-weight: 600; color: var(--text-muted); background: none; border: none; cursor: pointer; border-bottom: 2px solid transparent; transition: var(--transition); font-family: 'Inter', sans-serif; }
+    .region-tab.active { color: var(--green-dark); border-bottom-color: var(--green-dark); }
+
+    .map-placeholder { background: var(--cream); border-radius: var(--radius-lg); height: 420px; display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 0.9rem; margin-top: 64px; border: 1px dashed #C8C4BC; flex-direction: column; gap: 12px; }
+    .map-placeholder .map-icon { font-size: 3rem; opacity: 0.4; }
+    .map-placeholder p { font-size: 0.8rem; text-align: center; max-width: 300px; line-height: 1.6; }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="../index.html" class="logo"><div class="logo-icon"><img src = "{% static 'images/logo.jpg' %}"></div><div><div class="logo-text">Swiha Tours</div><div class="logo-sub">& Travel</div></div></a>
+    <ul class="nav-links">
+      <li><a href="{% url 'home' %}">Home</a></li><li><a href="{% url 'about' %}">About Us</a></li>
+      <li><a href="{% url 'packages' %}">Tour Packages</a></li><li><a href="{% url 'destinations' %}" class="active">Destinations</a></li>
+      <li><a href="{% url 'gallery' %}">Gallery</a></li><li><a href="{% url 'blog' %}">Blog</a></li>
+    <li><a href="{% url 'contact' %}">Contact</a></li><li><a href="{% url 'booking' %}" class="nav-cta">Book Now</a></li>
+    </ul>
+    <div class="hamburger"><span></span><span></span><span></span></div>
+  </div>
+</nav>
+<div class="mobile-nav"><button class="close-btn">✕</button>
+  <a href="../index.html">Home</a><a href="about.html">About Us</a><a href="packages.html">Tour Packages</a>
+  <a href="destinations.html">Destinations</a><a href="gallery.html">Gallery</a>
+  <a href="blog.html">Blog</a><a href="contact.html">Contact</a><a href="booking.html">Book Now</a>
+</div>
+
+<div class="page-hero">
+  <div class="page-hero-bg" style="background-image:url('https://images.unsplash.com/photo-1591825729269-caeb344f6df2?w=1400&q=80');"></div>
+  <div class="container">
+    <div class="page-hero-content">
+      <div class="breadcrumb"><a href="../index.html">Home</a><span>/</span><span>Destinations</span></div>
+      <h1>Explore Our Destinations</h1>
+      <p style="color:rgba(255,255,255,0.8);margin-top:8px;">14 destinations across Uganda, Rwanda, Kenya & Tanzania</p>
+    </div>
+  </div>
+</div>
+
+<!-- Region Tabs -->
+<div class="region-tabs">
+  <div class="container">
+    <button class="region-tab active">All Destinations</button>
+    <button class="region-tab">Uganda</button>
+    <button class="region-tab">Rwanda</button>
+    <button class="region-tab">Kenya</button>
+    <button class="region-tab">Tanzania</button>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <span class="eyebrow">Uganda</span>
+      <h2 style="color:var(--green-dark);">The Pearl of Africa</h2>
+      <p>Uganda packs extraordinary biodiversity into a small, verdant country — half of the world's mountain gorillas, 1,000+ bird species, and landscapes of remarkable diversity.</p>
+      <div class="title-line"></div>
+    </div>
+
+    <div class="dest-detail-grid">
+
+      <div class="dest-full-card reveal">
+        <div class="dest-full-img">
+          <img src="https://images.unsplash.com/photo-1516426122078-c23e76319801?w=600&q=80" alt="Bwindi Impenetrable Forest" />
+          <span class="badge">Most Popular</span>
+        </div>
+        <div class="dest-full-body">
+          <h3>Bwindi Impenetrable Forest</h3>
+          <p>Home to half the world's remaining mountain gorillas. This UNESCO World Heritage Site in southwestern Uganda offers the most profound wildlife encounter on earth.</p>
+          <div class="dest-facts">
+            <span class="dest-fact">🏔 1,190–2,607m altitude</span>
+            <span class="dest-fact">🦍 400+ gorillas</span>
+            <span class="dest-fact">🌧 Best: June–August</span>
+          </div>
+          <div class="dest-footer">
+            <span class="dest-tours-count"><strong>12</strong> tours available</span>
+            <a href="packages.html" class="btn btn-primary btn-sm">View Tours</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="dest-full-card reveal reveal-delay-1">
+        <div class="dest-full-img">
+          <img src="https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=600&q=80" alt="Queen Elizabeth National Park" />
+        </div>
+        <div class="dest-full-body">
+          <h3>Queen Elizabeth National Park</h3>
+          <p>Uganda's most visited park, famous for its tree-climbing lions, massive hippo pods, Kazinga Channel, and the remarkable Ishasha sector.</p>
+          <div class="dest-facts">
+            <span class="dest-fact">🦁 Tree-climbing lions</span>
+            <span class="dest-fact">🐘 5,000+ elephants</span>
+            <span class="dest-fact">🌤 Year-round</span>
+          </div>
+          <div class="dest-footer">
+            <span class="dest-tours-count"><strong>9</strong> tours available</span>
+            <a href="packages.html" class="btn btn-primary btn-sm">View Tours</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="dest-full-card reveal reveal-delay-2">
+        <div class="dest-full-img">
+          <img src="https://images.unsplash.com/photo-1591825729269-caeb344f6df2?w=600&q=80" alt="Murchison Falls" />
+        </div>
+        <div class="dest-full-body">
+          <h3>Murchison Falls National Park</h3>
+          <p>Watch the mighty Nile force itself through a 7-metre gorge creating the world's most powerful waterfall. Rich in wildlife and spectacular scenery.</p>
+          <div class="dest-facts">
+            <span class="dest-fact">💧 World's most powerful falls</span>
+            <span class="dest-fact">🦛 Uganda's largest NP</span>
+            <span class="dest-fact">🌤 Dec–Feb best</span>
+          </div>
+          <div class="dest-footer">
+            <span class="dest-tours-count"><strong>8</strong> tours available</span>
+            <a href="packages.html" class="btn btn-primary btn-sm">View Tours</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="dest-full-card reveal">
+        <div class="dest-full-img">
+          <img src="https://images.unsplash.com/photo-1504432842672-1a79f78e4084?w=600&q=80" alt="Kibale Forest" />
+        </div>
+        <div class="dest-full-body">
+          <h3>Kibale National Park</h3>
+          <p>Home to the highest density of primates in East Africa — 1,500 chimpanzees, 12 other primate species, and over 375 bird species in lush rainforest.</p>
+          <div class="dest-facts">
+            <span class="dest-fact">🐒 1,500 chimpanzees</span>
+            <span class="dest-fact">🦜 375+ bird species</span>
+            <span class="dest-fact">🌱 Bigodi Wetland Walk</span>
+          </div>
+          <div class="dest-footer">
+            <span class="dest-tours-count"><strong>7</strong> tours available</span>
+            <a href="packages.html" class="btn btn-primary btn-sm">View Tours</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="dest-full-card reveal reveal-delay-1">
+        <div class="dest-full-img">
+          <img src="https://images.unsplash.com/photo-1562159948-7e776f7a5e5c?w=600&q=80" alt="Jinja" />
+        </div>
+        <div class="dest-full-body">
+          <h3>Jinja — Source of the Nile</h3>
+          <p>East Africa's adventure capital. White-water rafting, kayaking, bungee jumping and quad biking at the source of the world's longest river.</p>
+          <div class="dest-facts">
+            <span class="dest-fact">🌊 Grade 5 rapids</span>
+            <span class="dest-fact">🏞 Nile source</span>
+            <span class="dest-fact">🌤 Year-round</span>
+          </div>
+          <div class="dest-footer">
+            <span class="dest-tours-count"><strong>6</strong> tours available</span>
+            <a href="packages.html" class="btn btn-primary btn-sm">View Tours</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="dest-full-card reveal reveal-delay-2">
+        <div class="dest-full-img">
+          <img src="https://images.unsplash.com/photo-1516426122078-c23e76319801?w=600&q=80" alt="Kidepo Valley" />
+        </div>
+        <div class="dest-full-body">
+          <h3>Kidepo Valley National Park</h3>
+          <p>Uganda's most remote and arguably most spectacular park. Dramatic semi-arid savannah with lions, cheetah, ostrich and massive buffalo herds.</p>
+          <div class="dest-facts">
+            <span class="dest-fact">🦁 77+ mammal species</span>
+            <span class="dest-fact">🐦 475+ bird species</span>
+            <span class="dest-fact">🌵 Arid wilderness</span>
+          </div>
+          <div class="dest-footer">
+            <span class="dest-tours-count"><strong>5</strong> tours available</span>
+            <a href="packages.html" class="btn btn-primary btn-sm">View Tours</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Rwanda section -->
+    <div style="margin-top:72px;">
+      <div class="section-header">
+        <span class="eyebrow">Rwanda</span>
+        <h2 style="color:var(--green-dark);">Land of a Thousand Hills</h2>
+        <div class="title-line"></div>
+      </div>
+      <div class="dest-detail-grid">
+        <div class="dest-full-card reveal">
+          <div class="dest-full-img"><img src="https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=600&q=80" alt="Volcanoes NP Rwanda" /></div>
+          <div class="dest-full-body">
+            <h3>Volcanoes National Park</h3>
+            <p>Track golden monkeys and mountain gorillas on the slopes of the Virunga volcanoes. Rwanda's crown jewel and one of Africa's most dramatic landscapes.</p>
+            <div class="dest-facts"><span class="dest-fact">🦍 Gorilla trekking</span><span class="dest-fact">🌋 Virunga volcanoes</span></div>
+            <div class="dest-footer"><span class="dest-tours-count"><strong>4</strong> tours available</span><a href="packages.html" class="btn btn-primary btn-sm">View Tours</a></div>
+          </div>
+        </div>
+        <div class="dest-full-card reveal reveal-delay-1">
+          <div class="dest-full-img"><img src="https://images.unsplash.com/photo-1591825729269-caeb344f6df2?w=600&q=80" alt="Nyungwe Forest" /></div>
+          <div class="dest-full-body">
+            <h3>Nyungwe Forest</h3>
+            <p>Ancient montane rainforest with chimpanzees, colobus monkeys, and a thrilling canopy walkway 60m above the forest floor.</p>
+            <div class="dest-facts"><span class="dest-fact">🐒 Colobus troops of 400</span><span class="dest-fact">🌿 Canopy walk</span></div>
+            <div class="dest-footer"><span class="dest-tours-count"><strong>3</strong> tours available</span><a href="packages.html" class="btn btn-primary btn-sm">View Tours</a></div>
+          </div>
+        </div>
+        <div class="dest-full-card reveal reveal-delay-2">
+          <div class="dest-full-img"><img src="https://images.unsplash.com/photo-1504432842672-1a79f78e4084?w=600&q=80" alt="Lake Kivu" /></div>
+          <div class="dest-full-body">
+            <h3>Lake Kivu</h3>
+            <p>One of Africa's great lakes, sitting on the Congo border. A beautiful reward after gorilla trekking — kayak, swim, and watch the sunset from the hills.</p>
+            <div class="dest-facts"><span class="dest-fact">🌊 Island day trips</span><span class="dest-fact">🌅 Stunning sunsets</span></div>
+            <div class="dest-footer"><span class="dest-tours-count"><strong>2</strong> tours available</span><a href="packages.html" class="btn btn-primary btn-sm">View Tours</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Map placeholder -->
+    <div class="map-placeholder">
+      <div class="map-icon">🗺</div>
+      <strong style="color:var(--green-dark);">Interactive Map Coming Soon</strong>
+      <p>An interactive map showing all our destinations across East Africa will be displayed here once the backend is connected.</p>
+    </div>
+
+  </div>
+</section>
+
+<div class="newsletter-strip">
+  <div class="container"><div class="newsletter-inner"><div><h3>Inspiration for Your Next Adventure</h3><p>Monthly destination guides and exclusive travel tips.</p></div><form class="newsletter-form" onsubmit="return false;"><input type="email" placeholder="Your email address" /><button type="submit">Subscribe</button></form></div></div>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand"><a href="../index.html" class="logo"><div class="logo-icon">🦍</div><div><div class="logo-text">Swiha Tours</div><div class="logo-sub">& Travel</div></div></a><p>Uganda's premier tour operator since 2012.</p><div class="footer-socials"><div class="social-btn">f</div><div class="social-btn">in</div><div class="social-btn">ig</div></div></div>
+      <div class="footer-col"><h4>Quick Links</h4><ul class="footer-links"><li><a href="../index.html">Home</a></li><li><a href="about.html">About Us</a></li><li><a href="packages.html">Tour Packages</a></li><li><a href="destinations.html">Destinations</a></li></ul></div>
+      <div class="footer-col"><h4>Top Destinations</h4><ul class="footer-links"><li><a href="#">Bwindi Forest</a></li><li><a href="#">Queen Elizabeth NP</a></li><li><a href="#">Murchison Falls</a></li><li><a href="#">Kibale Forest</a></li><li><a href="#">Kidepo Valley</a></li></ul></div>
+      <div class="footer-col"><h4>Contact</h4><div class="footer-contact-item"><span class="icon">📞</span><span>+256 700 000 000</span></div><div class="footer-contact-item"><span class="icon">✉</span><span>info@swihatoes.com</span></div></div>
+    </div>
+    <div class="footer-bottom"><p>© 2024 Swiha Tours & Travel. All rights reserved.</p><div class="footer-bottom-links"><a href="#">Privacy Policy</a><a href="#">Terms</a></div></div>
+  </div>
+</footer>
+
+<a href="https://wa.me/256700000000" class="whatsapp-float">💬</a>
+<button class="back-to-top">↑</button>
+<script src="{% static 'js/main.js' %}"></script>
+<script>
+  document.querySelectorAll('.region-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.region-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>

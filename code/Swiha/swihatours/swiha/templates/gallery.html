@@ -1,0 +1,131 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gallery — Swiha Tours & Travel</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  <style>
+    .gallery-filters { display: flex; gap: 10px; justify-content: center; margin-bottom: 40px; flex-wrap: wrap; }
+    .gallery-grid { columns: 3; column-gap: 16px; }
+    .gallery-item { break-inside: avoid; margin-bottom: 16px; border-radius: var(--radius-lg); overflow: hidden; cursor: pointer; position: relative; }
+    .gallery-item img { width: 100%; display: block; transition: transform 0.4s ease; }
+    .gallery-item:hover img { transform: scale(1.04); }
+    .gallery-overlay { position: absolute; inset: 0; background: rgba(27,67,50,0.0); transition: var(--transition); display: flex; align-items: center; justify-content: center; }
+    .gallery-overlay span { color: white; font-size: 2rem; opacity: 0; transition: var(--transition); }
+    .gallery-item:hover .gallery-overlay { background: rgba(27,67,50,0.35); }
+    .gallery-item:hover .gallery-overlay span { opacity: 1; }
+    @media (max-width: 768px) { .gallery-grid { columns: 2; } }
+    @media (max-width: 480px) { .gallery-grid { columns: 1; } }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="../index.html" class="logo"><div class="logo-icon"><img src = "{% static 'images/logo.jpg' %}"></div><div><div class="logo-text">Swiha Tours</div><div class="logo-sub">& Travel</div></div></a>
+    <ul class="nav-links">
+      <li><a href="{% url 'home' %}">Home</a></li>
+      <li><a href="{% url 'about' %}">About Us</a></li>
+      <li><a href="{% url 'packages' %}">Tour Packages</a></li>
+      <li><a href="{% url 'destinations' %}">Destinations</a></li>
+      <li><a href="{% url 'gallery' %}" class="active">Gallery</a></li>
+      <li><a href="{% url 'blog' %}">Blog</a></li>
+      <li><a href="{% url 'contact' %}">Contact</a></li>
+      <li><a href="{% url 'booking' %}" class="nav-cta">Book Now</a></li>
+    </ul>
+    <div class="hamburger"><span></span><span></span><span></span></div>
+  </div>
+</nav>
+<div class="mobile-nav"><button class="close-btn">✕</button>
+  <a href="../index.html">Home</a><a href="about.html">About Us</a><a href="packages.html">Tour Packages</a>
+  <a href="destinations.html">Destinations</a><a href="gallery.html">Gallery</a>
+  <a href="blog.html">Blog</a><a href="contact.html">Contact</a><a href="booking.html">Book Now</a>
+</div>
+
+<div class="page-hero">
+  <div class="page-hero-bg" style="background-image:url('https://images.unsplash.com/photo-1516426122078-c23e76319801?w=1400&q=80');"></div>
+  <div class="container">
+    <div class="page-hero-content">
+      <div class="breadcrumb"><a href="../index.html">Home</a><span>/</span><span>Gallery</span></div>
+      <h1>Photo Gallery</h1>
+      <p style="color:rgba(255,255,255,0.8);margin-top:8px;">Moments from Uganda's wild heart, captured by our travellers and guides</p>
+    </div>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+    <div class="section-header center">
+      <span class="eyebrow">Visual Stories</span>
+      <h2>Uganda Through Our Lens</h2>
+      <p>Every photo tells a story of wonder, wildness, and warm Ugandan welcome.</p>
+      <div class="title-line"></div>
+    </div>
+
+    <div class="gallery-filters">
+      <button class="filter-chip active">All Photos</button>
+      <button class="filter-chip">Gorillas</button>
+      <button class="filter-chip">Wildlife</button>
+      <button class="filter-chip">Landscapes</button>
+      <button class="filter-chip">Cultural</button>
+      <button class="filter-chip">Birds</button>
+      <button class="filter-chip">Adventure</button>
+    </div>
+
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1516426122078-c23e76319801?w=600&q=80" alt="Gorilla" /><div class="gallery-overlay"><span>🔍</span></div></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=600&q=80" alt="Safari" /><div class="gallery-overlay"><span>🔍</span></div></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1591825729269-caeb344f6df2?w=600&q=80" alt="Landscape" /><div class="gallery-overlay"><span>🔍</span></div></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1504432842672-1a79f78e4084?w=600&q=80" alt="Wildlife" /><div class="gallery-overlay"><span>🔍</span></div></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1562159948-7e776f7a5e5c?w=600&q=80" alt="Waterfall" /><div class="gallery-overlay"><span>🔍</span></div></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1516426122078-c23e76319801?w=400&q=80" alt="Trekking" /><div class="gallery-overlay"><span>🔍</span></div></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=400&q=80" alt="Elephant" /><div class="gallery-overlay"><span>🔍</span></div></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1591825729269-caeb344f6df2?w=400&q=80" alt="Savannah" /><div class="gallery-overlay"><span>🔍</span></div></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1504432842672-1a79f78e4084?w=600&q=80" alt="Chimpanzee" /><div class="gallery-overlay"><span>🔍</span></div></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1562159948-7e776f7a5e5c?w=600&q=80" alt="Nile" /><div class="gallery-overlay"><span>🔍</span></div></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1516426122078-c23e76319801?w=600&q=80" alt="Forest" /><div class="gallery-overlay"><span>🔍</span></div></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=600&q=80" alt="Sunset" /><div class="gallery-overlay"><span>🔍</span></div></div>
+    </div>
+
+    <div style="text-align:center;margin-top:48px;">
+      <button class="btn btn-green" id="loadMoreBtn">Load More Photos</button>
+    </div>
+  </div>
+</section>
+
+<div style="background:var(--cream);padding:64px 0;">
+  <div class="container" style="text-align:center;">
+    <span class="eyebrow">Share Your Story</span>
+    <h3 style="color:var(--green-dark);margin:12px 0 16px;">Travelled with Swiha? Tag Us!</h3>
+    <p style="color:var(--text-muted);max-width:480px;margin:0 auto 24px;">Use <strong>#SwihaTours</strong> and <strong>#VisitUganda</strong> on Instagram and your photos may be featured here.</p>
+    <div class="footer-socials" style="justify-content:center;"><div class="social-btn" style="border-color:var(--green-mid);color:var(--green-dark);">ig</div></div>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand"><a href="../index.html" class="logo"><div class="logo-icon">🦍</div><div><div class="logo-text">Swiha Tours</div><div class="logo-sub">& Travel</div></div></a><p>Uganda's premier tour operator since 2012.</p><div class="footer-socials"><div class="social-btn">f</div><div class="social-btn">in</div><div class="social-btn">ig</div></div></div>
+      <div class="footer-col"><h4>Quick Links</h4><ul class="footer-links"><li><a href="../index.html">Home</a></li><li><a href="about.html">About Us</a></li><li><a href="packages.html">Tour Packages</a></li><li><a href="destinations.html">Destinations</a></li><li><a href="gallery.html">Gallery</a></li></ul></div>
+      <div class="footer-col"><h4>Our Tours</h4><ul class="footer-links"><li><a href="packages.html">Gorilla Trekking</a></li><li><a href="packages.html">Wildlife Safaris</a></li><li><a href="packages.html">Bird Watching</a></li><li><a href="packages.html">Cultural Tours</a></li></ul></div>
+      <div class="footer-col"><h4>Contact</h4><div class="footer-contact-item"><span class="icon">📞</span><span>+256 700 000 000</span></div><div class="footer-contact-item"><span class="icon">✉</span><span>info@swihatoes.com</span></div></div>
+    </div>
+    <div class="footer-bottom"><p>© 2024 Swiha Tours & Travel. All rights reserved.</p><div class="footer-bottom-links"><a href="#">Privacy Policy</a><a href="#">Terms</a></div></div>
+  </div>
+</footer>
+
+<a href="https://wa.me/256700000000" class="whatsapp-float">💬</a>
+<button class="back-to-top">↑</button>
+<script src="{% static 'js/main.js' %}"></script>
+<script>
+  document.querySelectorAll('.filter-chip').forEach(chip => {
+    chip.addEventListener('click', () => { document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active')); chip.classList.add('active'); });
+  });
+  document.getElementById('loadMoreBtn').addEventListener('click', function() {
+    this.textContent = 'Loading...';
+    setTimeout(() => { this.textContent = 'All Photos Loaded'; this.disabled = true; this.style.opacity = '0.5'; }, 800);
+  });
+</script>
+</body>
+</html>

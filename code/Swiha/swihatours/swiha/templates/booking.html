@@ -1,0 +1,389 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Book Your Tour — Swiha Tours & Travel</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  <style>
+    .booking-layout { display: grid; grid-template-columns: 1fr 380px; gap: 48px; align-items: start; }
+    .booking-form-card { background: var(--white); border-radius: var(--radius-lg); box-shadow: var(--shadow-md); overflow: hidden; }
+    .booking-steps { display: flex; background: var(--ivory); }
+    .step { flex: 1; padding: 20px 16px; text-align: center; border-bottom: 2px solid transparent; }
+    .step.active { border-bottom-color: var(--green-dark); background: var(--white); }
+    .step.done { border-bottom-color: var(--gold); }
+    .step-num { width: 28px; height: 28px; border-radius: 50%; background: var(--cream); color: var(--text-muted); font-size: 0.78rem; font-weight: 700; display: flex; align-items: center; justify-content: center; margin: 0 auto 6px; transition: var(--transition); }
+    .step.active .step-num { background: var(--green-dark); color: var(--white); }
+    .step.done .step-num { background: var(--gold); color: var(--green-dark); }
+    .step-label { font-size: 0.72rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; }
+    .step.active .step-label { color: var(--green-dark); }
+    .booking-form-body { padding: 40px; }
+    .section-subtitle { font-size: 1.3rem; font-family: 'Playfair Display', serif; color: var(--green-dark); margin-bottom: 8px; }
+    .section-hint { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 28px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .traveller-block { background: var(--ivory); border-radius: var(--radius); padding: 20px; margin-bottom: 12px; }
+    .traveller-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; font-weight: 600; font-size: 0.9rem; color: var(--green-dark); }
+    .add-traveller-btn { border: 1.5px dashed #C8C4BC; border-radius: var(--radius); padding: 12px; width: 100%; text-align: center; color: var(--text-muted); font-size: 0.875rem; cursor: pointer; background: none; font-family: 'Inter', sans-serif; transition: var(--transition); margin-bottom: 24px; }
+    .add-traveller-btn:hover { border-color: var(--green-mid); color: var(--green-mid); }
+
+    /* Booking summary sidebar */
+    .booking-summary { background: var(--white); border-radius: var(--radius-lg); box-shadow: var(--shadow-md); overflow: hidden; position: sticky; top: 100px; }
+    .summary-header { background: var(--green-dark); padding: 24px; }
+    .summary-header h4 { color: var(--white); font-size: 1rem; margin-bottom: 4px; }
+    .summary-header p { color: rgba(255,255,255,0.65); font-size: 0.8rem; }
+    .summary-body { padding: 24px; }
+    .summary-tour { display: flex; gap: 14px; margin-bottom: 20px; }
+    .summary-tour img { width: 72px; height: 72px; border-radius: 8px; object-fit: cover; }
+    .summary-tour-title { font-weight: 600; font-size: 0.9rem; color: var(--charcoal); margin-bottom: 4px; }
+    .summary-tour-sub { font-size: 0.78rem; color: var(--text-muted); }
+    .summary-line { display: flex; justify-content: space-between; font-size: 0.875rem; padding: 10px 0; border-bottom: 1px solid var(--cream); }
+    .summary-line:last-of-type { border-bottom: none; }
+    .summary-total { display: flex; justify-content: space-between; padding: 16px 0 0; margin-top: 8px; border-top: 2px solid var(--cream); font-weight: 700; }
+    .summary-total .label { font-family: 'Playfair Display', serif; color: var(--green-dark); font-size: 1rem; }
+    .summary-total .amount { font-family: 'Playfair Display', serif; color: var(--green-dark); font-size: 1.4rem; }
+    .summary-notice { background: rgba(212,160,23,0.1); border-radius: var(--radius); padding: 12px 14px; font-size: 0.78rem; color: var(--gold-dark); margin-top: 20px; line-height: 1.6; }
+    .trust-badges { display: flex; flex-direction: column; gap: 8px; margin-top: 20px; }
+    .trust-badge { display: flex; gap: 8px; align-items: center; font-size: 0.78rem; color: var(--text-muted); }
+    .trust-badge-icon { color: var(--green-mid); font-size: 1rem; }
+
+    .payment-options { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
+    .payment-opt { border: 2px solid #D8D4CC; border-radius: var(--radius); padding: 16px; cursor: pointer; transition: var(--transition); text-align: center; }
+    .payment-opt.selected { border-color: var(--green-dark); background: rgba(27,67,50,0.04); }
+    .payment-opt h5 { font-size: 0.85rem; color: var(--green-dark); margin-bottom: 4px; }
+    .payment-opt p { font-size: 0.75rem; color: var(--text-muted); }
+    .payment-opt .pay-amount { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; color: var(--green-dark); }
+
+    @media (max-width: 1024px) {
+      .booking-layout { grid-template-columns: 1fr; }
+      .booking-summary { position: static; }
+    }
+    @media (max-width: 768px) {
+      .form-row { grid-template-columns: 1fr; }
+      .booking-form-body { padding: 24px; }
+      .booking-steps { overflow-x: auto; }
+      .payment-options { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="../index.html" class="logo"><div class="logo-icon"><img src = "{% static 'images/logo.jpg' %}"></div><div><div class="logo-text">Swiha Tours</div><div class="logo-sub">& Travel</div></div></a>
+    <ul class="nav-links">
+      <li><a href="{% url 'home' %}" >Home</a></li>
+      <li><a href="{% url 'about' %}">About Us</a></li>
+      <li><a href="{% url 'packages' %}">Tour Packages</a></li>
+      <li><a href="{% url 'destinations' %}">Destinations</a></li>
+      <li><a href="{% url 'gallery' %}">Gallery</a></li>
+      <li><a href="{% url 'blog' %}">Blog</a></li>
+      <li><a href="{% url 'contact' %}">Contact</a></li>
+      <li><a href="{% url 'booking' %}" class="nav-cta" class="active">Book Now</a></li>
+    </ul>
+    <div class="hamburger"><span></span><span></span><span></span></div>
+  </div>
+</nav>
+<div class="mobile-nav"><button class="close-btn">✕</button>
+  <a href="../index.html">Home</a><a href="about.html">About Us</a><a href="packages.html">Tour Packages</a>
+  <a href="destinations.html">Destinations</a><a href="gallery.html">Gallery</a>
+  <a href="blog.html">Blog</a><a href="contact.html">Contact</a><a href="booking.html">Book Now</a>
+</div>
+
+<div class="page-hero" style="height:320px;">
+  <div class="page-hero-bg" style="background-image:url('https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=1400&q=80');"></div>
+  <div class="container">
+    <div class="page-hero-content">
+      <div class="breadcrumb"><a href="../index.html">Home</a><span>/</span><a href="packages.html">Tour Packages</a><span>/</span><span>Book Your Tour</span></div>
+      <h1>Book Your Adventure</h1>
+      <p style="color:rgba(255,255,255,0.8);margin-top:8px;">Secure your spot — we'll confirm within 24 hours</p>
+    </div>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+    <div class="booking-layout">
+      <!-- Booking Form -->
+      <div class="booking-form-card reveal">
+        <!-- Steps -->
+        <div class="booking-steps">
+          <div class="step active"><div class="step-num">1</div><div class="step-label">Your Details</div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-label">Travellers</div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-label">Trip Extras</div></div>
+          <div class="step"><div class="step-num">4</div><div class="step-label">Payment</div></div>
+          <div class="step"><div class="step-num">5</div><div class="step-label">Confirm</div></div>
+        </div>
+
+        <div class="booking-form-body">
+          <form class="ajax-form" id="bookingForm" action="#" method="POST">
+
+            <!-- Step 1: Tour & Contact -->
+            <div class="step-panel" id="stepPanel1">
+              <div class="section-subtitle">Choose Your Tour</div>
+              <div class="section-hint">Select your preferred package, travel dates, and contact details.</div>
+
+              <div class="form-group">
+                <label class="form-label">Select Tour Package *</label>
+                <select class="form-control" name="tour_package" required>
+                  <option value="">— Choose a package —</option>
+                  <optgroup label="Gorilla Trekking">
+                    <option>5-Day Bwindi Gorilla Trek & Safari — from $1,850/person</option>
+                    <option>3-Day Bwindi Express Gorilla Trek — from $950/person</option>
+                    <option>8-Day Gorilla & Chimps Combo — from $2,600/person</option>
+                  </optgroup>
+                  <optgroup label="Wildlife Safari">
+                    <option>4-Day Queen Elizabeth Safari — from $1,200/person</option>
+                    <option>4-Day Murchison Falls Adventure — from $1,100/person</option>
+                    <option>3-Day Lake Mburo Safari — from $780/person</option>
+                    <option>10-Day Ultimate Uganda Safari — from $3,800/person</option>
+                  </optgroup>
+                  <optgroup label="Primate & Bird">
+                    <option>3-Day Kibale Chimpanzee Trek — from $980/person</option>
+                    <option>4-Day Birds of Uganda — from $1,050/person</option>
+                  </optgroup>
+                  <optgroup label="Adventure">
+                    <option>2-Day Jinja Nile Adventure — from $380/person</option>
+                    <option>3-Day Rwenzori Foothills Hike — from $650/person</option>
+                  </optgroup>
+                  <optgroup label="Cultural">
+                    <option>2-Day Kampala Cultural Experience — from $280/person</option>
+                  </optgroup>
+                  <option value="custom">Custom Itinerary Request</option>
+                </select>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">Travel Start Date *</label>
+                  <input type="date" class="form-control" name="start_date" required />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Number of Travellers *</label>
+                  <select class="form-control" name="num_travellers" required>
+                    <option value="1">1 Person</option>
+                    <option value="2" selected>2 People</option>
+                    <option value="3">3 People</option>
+                    <option value="4">4 People</option>
+                    <option value="5">5 People</option>
+                    <option value="6">6 People</option>
+                    <option value="custom">7+ People (Custom quote)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Accommodation Preference</label>
+                <select class="form-control" name="accommodation">
+                  <option>Budget (Guesthouses & budget lodges)</option>
+                  <option selected>Mid-range (Comfortable lodges)</option>
+                  <option>Luxury (Premium safari lodges & camps)</option>
+                  <option>Mix (Some budget, some mid-range)</option>
+                </select>
+              </div>
+
+              <hr style="border:none;border-top:1px solid var(--cream);margin:28px 0;" />
+              <div class="section-subtitle">Your Contact Details</div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">First Name *</label>
+                  <input type="text" class="form-control" name="first_name" required placeholder="John" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Last Name *</label>
+                  <input type="text" class="form-control" name="last_name" required placeholder="Smith" />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">Email Address *</label>
+                  <input type="email" class="form-control" name="email" required placeholder="john@example.com" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Phone / WhatsApp *</label>
+                  <input type="tel" class="form-control" name="phone" required placeholder="+1 234 567 8900" />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">Nationality</label>
+                  <input type="text" class="form-control" name="nationality" placeholder="British" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Country of Residence</label>
+                  <input type="text" class="form-control" name="country" placeholder="United Kingdom" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Travellers Info placeholder (Step 2) -->
+            <div class="form-group">
+              <label class="form-label">Traveller Details</label>
+              <div class="traveller-block">
+                <div class="traveller-header"><span>Traveller 1 (Lead)</span></div>
+                <div class="form-row">
+                  <div class="form-group" style="margin-bottom:0;">
+                    <label class="form-label">Full Name (as on passport)</label>
+                    <input type="text" class="form-control" name="t1_name" placeholder="John Smith" />
+                  </div>
+                  <div class="form-group" style="margin-bottom:0;">
+                    <label class="form-label">Date of Birth</label>
+                    <input type="date" class="form-control" name="t1_dob" />
+                  </div>
+                </div>
+              </div>
+              <button type="button" class="add-traveller-btn" id="addTravellerBtn">+ Add Another Traveller</button>
+            </div>
+
+            <!-- Extras -->
+            <hr style="border:none;border-top:1px solid var(--cream);margin:8px 0 28px;" />
+            <div class="section-subtitle">Optional Add-Ons</div>
+            <div class="section-hint">Enhance your experience with these extras.</div>
+
+            <div class="check-group" style="margin-bottom:24px;">
+              <label class="check-item"><input type="checkbox" name="addon_airport" /> Airport pickup & drop-off (+$80)</label>
+              <label class="check-item"><input type="checkbox" name="addon_visa" /> Visa support assistance (free)</label>
+              <label class="check-item"><input type="checkbox" name="addon_insurance" /> Travel insurance advice (free consultation)</label>
+              <label class="check-item"><input type="checkbox" name="addon_photography" /> Professional wildlife photography guide (+$150/day)</label>
+              <label class="check-item"><input type="checkbox" name="addon_kampala" /> Kampala pre-tour city orientation (+$120)</label>
+              <label class="check-item"><input type="checkbox" name="addon_community" /> Community village visit (+$45/person)</label>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Special Requirements / Notes</label>
+              <textarea class="form-control" name="special_requirements" rows="4" placeholder="Dietary restrictions, medical considerations, special occasions (honeymoon, birthday), fitness concerns, or anything else we should know…"></textarea>
+            </div>
+
+            <!-- Payment -->
+            <hr style="border:none;border-top:1px solid var(--cream);margin:8px 0 28px;" />
+            <div class="section-subtitle">Payment Option</div>
+            <div class="section-hint">Choose how you'd like to pay. Full details will be sent after confirmation.</div>
+
+            <div class="payment-options">
+              <div class="payment-opt selected" id="depositOpt">
+                <h5>30% Deposit Now</h5>
+                <div class="pay-amount">$1,110</div>
+                <p>Pay balance 30 days before travel</p>
+              </div>
+              <div class="payment-opt" id="fullOpt">
+                <h5>Pay in Full</h5>
+                <div class="pay-amount">$3,700</div>
+                <p>Save 2% with full payment</p>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Preferred Payment Method</label>
+              <select class="form-control" name="payment_method">
+                <option>Bank Transfer (Wire)</option>
+                <option>Credit / Debit Card (Visa, Mastercard)</option>
+                <option>PayPal</option>
+                <option>Mobile Money (MTN / Airtel)</option>
+                <option>Discuss with team</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="check-item" style="display:flex;gap:10px;font-size:0.85rem;">
+                <input type="checkbox" name="terms" required />
+                I have read and agree to the <a href="#" style="color:var(--green-mid);">Terms & Conditions</a> and <a href="#" style="color:var(--green-mid);">Cancellation Policy</a>.
+              </label>
+            </div>
+
+            <button type="submit" class="btn btn-green" style="width:100%;justify-content:center;padding:16px;font-size:1rem;">
+              Submit Booking Request →
+            </button>
+
+            <p style="font-size:0.78rem;color:var(--text-muted);text-align:center;margin-top:14px;">
+              This submits a booking <em>request</em>. Our team will confirm availability and send payment details within 24 hours. No payment is taken now.
+            </p>
+          </form>
+        </div>
+      </div>
+
+      <!-- Summary sidebar -->
+      <div class="booking-summary reveal reveal-delay-1">
+        <div class="summary-header">
+          <h4>Booking Summary</h4>
+          <p>Estimated based on your selections</p>
+        </div>
+        <div class="summary-body">
+          <div class="summary-tour">
+            <img src="https://images.unsplash.com/photo-1516426122078-c23e76319801?w=200&q=70" alt="Tour" />
+            <div>
+              <div class="summary-tour-title">5-Day Bwindi Gorilla Trek</div>
+              <div class="summary-tour-sub">Mid-range accommodation</div>
+            </div>
+          </div>
+          <div class="summary-line"><span>Tour price (2 persons)</span><span>$3,700</span></div>
+          <div class="summary-line"><span>Gorilla permits ×2</span><span>Included</span></div>
+          <div class="summary-line"><span>Airport transfers</span><span>$80</span></div>
+          <div class="summary-line"><span>Add-ons</span><span>$0</span></div>
+          <div class="summary-total"><span class="label">Total</span><span class="amount">$3,780</span></div>
+          <div class="summary-notice">💡 30% deposit secures your booking: <strong>$1,134</strong>. Balance due 30 days before travel.</div>
+          <div class="trust-badges">
+            <div class="trust-badge"><span class="trust-badge-icon">🔒</span> Secure booking — no payment taken now</div>
+            <div class="trust-badge"><span class="trust-badge-icon">✅</span> Confirmed within 24 hours</div>
+            <div class="trust-badge"><span class="trust-badge-icon">🛡️</span> Licensed Uganda Tourism Board operator</div>
+            <div class="trust-badge"><span class="trust-badge-icon">📞</span> 24/7 in-country support included</div>
+          </div>
+          <div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--cream);">
+            <p style="font-size:0.8rem;color:var(--text-muted);margin-bottom:12px;">Questions before booking?</p>
+            <a href="https://wa.me/256700000000" class="btn btn-primary" style="width:100%;justify-content:center;">💬 Chat on WhatsApp</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Trust section -->
+<div class="stats-bar">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item"><div class="stat-num">2000+</div><div class="stat-label">Happy Travellers</div></div>
+      <div class="stat-item"><div class="stat-num">12</div><div class="stat-label">Years Experience</div></div>
+      <div class="stat-item"><div class="stat-num">4.9★</div><div class="stat-label">Average Rating</div></div>
+      <div class="stat-item"><div class="stat-num">100%</div><div class="stat-label">Licensed & Insured</div></div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand"><a href="../index.html" class="logo"><div class="logo-icon">🦍</div><div><div class="logo-text">Swiha Tours</div><div class="logo-sub">& Travel</div></div></a><p>Uganda's premier tour operator since 2012.</p><div class="footer-socials"><div class="social-btn">f</div><div class="social-btn">in</div><div class="social-btn">ig</div></div></div>
+      <div class="footer-col"><h4>Quick Links</h4><ul class="footer-links"><li><a href="../index.html">Home</a></li><li><a href="about.html">About Us</a></li><li><a href="packages.html">Tour Packages</a></li><li><a href="destinations.html">Destinations</a></li></ul></div>
+      <div class="footer-col"><h4>Our Tours</h4><ul class="footer-links"><li><a href="packages.html">Gorilla Trekking</a></li><li><a href="packages.html">Wildlife Safaris</a></li><li><a href="packages.html">Bird Watching</a></li></ul></div>
+      <div class="footer-col"><h4>Contact</h4><div class="footer-contact-item"><span class="icon">📞</span><span>+256 700 000 000</span></div><div class="footer-contact-item"><span class="icon">✉</span><span>info@swihatoes.com</span></div></div>
+    </div>
+    <div class="footer-bottom"><p>© 2024 Swiha Tours & Travel. All rights reserved.</p><div class="footer-bottom-links"><a href="#">Privacy Policy</a><a href="#">Terms</a></div></div>
+  </div>
+</footer>
+
+<a href="https://wa.me/256700000000" class="whatsapp-float">💬</a>
+<button class="back-to-top">↑</button>
+<script src="{% static 'js/main.js' %}"></script>
+<script>
+  // Payment option toggle
+  const depositOpt = document.getElementById('depositOpt');
+  const fullOpt = document.getElementById('fullOpt');
+  depositOpt?.addEventListener('click', () => { depositOpt.classList.add('selected'); fullOpt.classList.remove('selected'); });
+  fullOpt?.addEventListener('click', () => { fullOpt.classList.add('selected'); depositOpt.classList.remove('selected'); });
+
+  // Add traveller (frontend only)
+  let count = 1;
+  document.getElementById('addTravellerBtn')?.addEventListener('click', function() {
+    if (count >= 8) { this.textContent = 'Maximum 8 travellers. Contact us for larger groups.'; return; }
+    count++;
+    const block = document.createElement('div');
+    block.className = 'traveller-block';
+    block.innerHTML = `<div class="traveller-header"><span>Traveller ${count}</span><button type="button" onclick="this.closest('.traveller-block').remove()" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:0.8rem;">Remove</button></div><div class="form-row"><div class="form-group" style="margin-bottom:0;"><label class="form-label">Full Name (as on passport)</label><input type="text" class="form-control" name="t${count}_name" placeholder="Full Name" /></div><div class="form-group" style="margin-bottom:0;"><label class="form-label">Date of Birth</label><input type="date" class="form-control" name="t${count}_dob" /></div></div>`;
+    this.parentNode.insertBefore(block, this);
+  });
+
+  // Min date
+  document.querySelectorAll('input[type="date"]').forEach(el => { el.min = new Date().toISOString().split('T')[0]; });
+</script>
+</body>
+</html>

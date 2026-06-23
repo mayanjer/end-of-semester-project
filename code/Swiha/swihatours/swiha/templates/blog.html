@@ -1,0 +1,223 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Travel Blog — Swiha Tours & Travel</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  <style>
+    .blog-layout { display: grid; grid-template-columns: 1fr 320px; gap: 56px; align-items: start; }
+    .blog-main-grid { display: grid; gap: 32px; }
+    .blog-card { display: grid; grid-template-columns: 280px 1fr; background: var(--white); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm); transition: var(--transition); }
+    .blog-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+    .blog-card-img img { width: 100%; height: 100%; object-fit: cover; }
+    .blog-card-body { padding: 28px; }
+    .blog-date { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 10px; }
+    .blog-title { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--green-dark); margin-bottom: 12px; line-height: 1.35; }
+    .blog-title:hover { color: var(--gold-dark); }
+    .blog-excerpt { font-size: 0.875rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 20px; }
+    .blog-meta { display: flex; gap: 20px; font-size: 0.78rem; color: var(--text-muted); flex-wrap: wrap; }
+    .blog-featured { grid-template-columns: 1fr; }
+    .blog-featured .blog-card-img { height: 360px; }
+    .blog-featured .blog-card-body { padding: 36px; }
+    .blog-featured .blog-title { font-size: 1.8rem; }
+
+    .sidebar-widget { background: var(--ivory); border-radius: var(--radius-lg); padding: 28px; margin-bottom: 28px; }
+    .sidebar-widget h4 { font-family: 'Inter', sans-serif; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--green-dark); margin-bottom: 20px; }
+    .category-list { display: flex; flex-direction: column; gap: 0; }
+    .category-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--cream); font-size: 0.875rem; }
+    .category-item:last-child { border-bottom: none; }
+    .category-item a { color: var(--charcoal); transition: var(--transition); }
+    .category-item a:hover { color: var(--gold-dark); }
+    .category-count { background: var(--cream); color: var(--text-muted); font-size: 0.72rem; font-weight: 600; padding: 2px 8px; border-radius: 10px; }
+    .recent-post { display: flex; gap: 12px; margin-bottom: 16px; }
+    .recent-post:last-child { margin-bottom: 0; }
+    .recent-post img { width: 64px; height: 64px; border-radius: 6px; object-fit: cover; flex-shrink: 0; }
+    .recent-post-title { font-size: 0.84rem; font-weight: 600; color: var(--charcoal); line-height: 1.4; margin-bottom: 4px; }
+    .recent-post-date { font-size: 0.75rem; color: var(--text-muted); }
+    .tag-cloud { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tag-pill { padding: 5px 14px; border: 1.5px solid #D8D4CC; border-radius: 50px; font-size: 0.78rem; color: var(--charcoal); cursor: pointer; transition: var(--transition); }
+    .tag-pill:hover { border-color: var(--green-dark); color: var(--green-dark); }
+
+    @media (max-width: 1024px) {
+      .blog-layout { grid-template-columns: 1fr; }
+      .blog-card { grid-template-columns: 1fr; }
+      .blog-card-img img { height: 220px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="../index.html" class="logo"><div class="logo-icon"><img src = "{% static 'images/logo.jpg' %}"></div><div><div class="logo-text">Swiha Tours</div><div class="logo-sub">& Travel</div></div></a>
+    <ul class="nav-links">
+      <li><a href="{% url 'home'%}" >Home</a></li>
+      <li><a href="{% url 'about' %}">About Us</a></li>
+      <li><a href="{% url 'packages' %}">Tour Packages</a></li>
+      <li><a href="{% url 'destinations' %}">Destinations</a></li>
+      <li><a href="{% url 'gallery' %}">Gallery</a></li>
+      <li><a href="{% url 'blog' %}" class="active">Blog</a></li>
+      <li><a href="{% url 'contact' %}">Contact</a></li>
+      <li><a href="{% url 'booking' %}" class="nav-cta">Book Now</a></li>
+    </ul>
+    <div class="hamburger"><span></span><span></span><span></span></div>
+  </div>
+</nav>
+<div class="mobile-nav"><button class="close-btn">✕</button>
+  <a href="../index.html">Home</a><a href="about.html">About Us</a><a href="packages.html">Tour Packages</a>
+  <a href="destinations.html">Destinations</a><a href="gallery.html">Gallery</a>
+  <a href="blog.html">Blog</a><a href="contact.html">Contact</a><a href="booking.html">Book Now</a>
+</div>
+
+<div class="page-hero">
+  <div class="page-hero-bg" style="background-image:url('https://images.unsplash.com/photo-1504432842672-1a79f78e4084?w=1400&q=80');"></div>
+  <div class="container">
+    <div class="page-hero-content">
+      <div class="breadcrumb"><a href="../index.html">Home</a><span>/</span><span>Travel Blog</span></div>
+      <h1>Swiha Travel Blog</h1>
+      <p style="color:rgba(255,255,255,0.8);margin-top:8px;">Stories, guides, and tips from Uganda's wild heart</p>
+    </div>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+    <div class="blog-layout">
+      <div>
+        <!-- Featured post -->
+        <div class="blog-card blog-featured reveal" style="margin-bottom:32px;">
+          <div class="blog-card-img">
+            <img src="https://images.unsplash.com/photo-1516426122078-c23e76319801?w=900&q=80" alt="Gorilla trekking guide" />
+          </div>
+          <div class="blog-card-body">
+            <span class="card-tag">Featured</span>
+            <div class="blog-date">December 3, 2024</div>
+            <a href="#"><div class="blog-title">The Complete Guide to Gorilla Trekking in Bwindi: Everything You Need to Know in 2024</div></a>
+            <div class="blog-excerpt">Gorilla trekking is often described as the most profound wildlife experience on earth. In this comprehensive guide, our head guide Daniel Ochieng shares everything — from physical preparation to what to expect in that magical hour with the gorillas.</div>
+            <div class="blog-meta">
+              <span>✍ Daniel Ochieng</span>
+              <span>🕐 12 min read</span>
+              <span>🏷 Gorilla Trekking</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Regular posts -->
+        <div class="blog-main-grid">
+          <div class="blog-card reveal">
+            <div class="blog-card-img"><img src="https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=400&q=80" alt="Safari tips" /></div>
+            <div class="blog-card-body">
+              <span class="card-tag">Safari Tips</span>
+              <div class="blog-date">November 18, 2024</div>
+              <a href="#"><div class="blog-title">Best Time to Visit Uganda: A Month-by-Month Breakdown</div></a>
+              <div class="blog-excerpt">Uganda is a year-round destination, but timing your visit can dramatically improve your experience. Here's our expert guide to Uganda's seasons and what to expect each month.</div>
+              <div class="blog-meta"><span>✍ Grace Namutebi</span><span>🕐 8 min read</span><span>🏷 Travel Tips</span></div>
+            </div>
+          </div>
+
+          <div class="blog-card reveal">
+            <div class="blog-card-img"><img src="https://images.unsplash.com/photo-1591825729269-caeb344f6df2?w=400&q=80" alt="Kidepo" /></div>
+            <div class="blog-card-body">
+              <span class="card-tag">Destination</span>
+              <div class="blog-date">October 30, 2024</div>
+              <a href="#"><div class="blog-title">Why Kidepo Valley is Uganda's Most Underrated Safari Destination</div></a>
+              <div class="blog-excerpt">Remote, raw, and utterly spectacular. Kidepo Valley sees just a fraction of Uganda's tourists, yet many who visit call it the highlight of their entire African trip.</div>
+              <div class="blog-meta"><span>✍ Robert Ssebagala</span><span>🕐 7 min read</span><span>🏷 Destinations</span></div>
+            </div>
+          </div>
+
+          <div class="blog-card reveal">
+            <div class="blog-card-img"><img src="https://images.unsplash.com/photo-1562159948-7e776f7a5e5c?w=400&q=80" alt="Jinja" /></div>
+            <div class="blog-card-body">
+              <span class="card-tag">Adventure</span>
+              <div class="blog-date">October 12, 2024</div>
+              <a href="#"><div class="blog-title">One Adrenaline-Packed Weekend in Jinja: The Complete Activity Guide</div></a>
+              <div class="blog-excerpt">White-water rafting, bungee jumping, quad biking, kayaking — Jinja offers more adventure activities per square kilometre than almost anywhere else in Africa.</div>
+              <div class="blog-meta"><span>✍ Fatuma Nakigozi</span><span>🕐 6 min read</span><span>🏷 Adventure</span></div>
+            </div>
+          </div>
+
+          <div class="blog-card reveal">
+            <div class="blog-card-img"><img src="https://images.unsplash.com/photo-1516426122078-c23e76319801?w=400&q=80" alt="Packing" /></div>
+            <div class="blog-card-body">
+              <span class="card-tag">Travel Tips</span>
+              <div class="blog-date">September 25, 2024</div>
+              <a href="#"><div class="blog-title">What to Pack for a Uganda Safari: The Definitive Packing List</div></a>
+              <div class="blog-excerpt">Layers for altitude, waterproofs for forest treks, neutral colours for game drives — packing for Uganda requires some thought. Our guides share what they've learned from 2,000+ travellers.</div>
+              <div class="blog-meta"><span>✍ Daniel Ochieng</span><span>🕐 10 min read</span><span>🏷 Travel Tips</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div style="text-align:center;margin-top:48px;">
+          <button class="btn btn-green">Load More Articles</button>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <aside>
+        <div class="sidebar-widget">
+          <h4>Search</h4>
+          <div style="display:flex;gap:0;">
+            <input type="text" class="form-control" placeholder="Search articles…" style="border-radius:4px 0 0 4px;" />
+            <button class="btn btn-green" style="padding:12px 16px;border-radius:0 4px 4px 0;">🔍</button>
+          </div>
+        </div>
+        <div class="sidebar-widget">
+          <h4>Categories</h4>
+          <div class="category-list">
+            <div class="category-item"><a href="#">Gorilla Trekking</a><span class="category-count">8</span></div>
+            <div class="category-item"><a href="#">Wildlife Safari</a><span class="category-count">12</span></div>
+            <div class="category-item"><a href="#">Travel Tips</a><span class="category-count">15</span></div>
+            <div class="category-item"><a href="#">Destinations</a><span class="category-count">10</span></div>
+            <div class="category-item"><a href="#">Adventure</a><span class="category-count">6</span></div>
+            <div class="category-item"><a href="#">Bird Watching</a><span class="category-count">5</span></div>
+            <div class="category-item"><a href="#">Cultural Tours</a><span class="category-count">4</span></div>
+          </div>
+        </div>
+        <div class="sidebar-widget">
+          <h4>Recent Posts</h4>
+          <div class="recent-post"><img src="https://images.unsplash.com/photo-1516426122078-c23e76319801?w=100&q=70" alt="" /><div><div class="recent-post-title">Complete Guide to Gorilla Trekking in Bwindi 2024</div><div class="recent-post-date">Dec 3, 2024</div></div></div>
+          <div class="recent-post"><img src="https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=100&q=70" alt="" /><div><div class="recent-post-title">Best Time to Visit Uganda: Month-by-Month</div><div class="recent-post-date">Nov 18, 2024</div></div></div>
+          <div class="recent-post"><img src="https://images.unsplash.com/photo-1591825729269-caeb344f6df2?w=100&q=70" alt="" /><div><div class="recent-post-title">Why Kidepo is Uganda's Hidden Gem</div><div class="recent-post-date">Oct 30, 2024</div></div></div>
+        </div>
+        <div class="sidebar-widget">
+          <h4>Popular Tags</h4>
+          <div class="tag-cloud">
+            <span class="tag-pill">Gorillas</span><span class="tag-pill">Bwindi</span><span class="tag-pill">Safari</span>
+            <span class="tag-pill">Uganda</span><span class="tag-pill">Jinja</span><span class="tag-pill">Wildlife</span>
+            <span class="tag-pill">Birds</span><span class="tag-pill">Packing</span><span class="tag-pill">Rwanda</span>
+            <span class="tag-pill">Culture</span>
+          </div>
+        </div>
+        <div class="sidebar-widget" style="background:var(--green-dark);color:white;">
+          <h4 style="color:var(--gold);">Plan Your Trip</h4>
+          <p style="font-size:0.875rem;line-height:1.65;margin-bottom:16px;color:rgba(255,255,255,0.75);">Ready to experience Uganda for yourself? Our team is standing by.</p>
+          <a href="contact.html" class="btn btn-primary" style="width:100%;justify-content:center;">Get a Free Quote</a>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<div class="newsletter-strip">
+  <div class="container"><div class="newsletter-inner"><div><h3>Never Miss a Story</h3><p>Subscribe for weekly articles, travel tips, and exclusive deals.</p></div><form class="newsletter-form" onsubmit="return false;"><input type="email" placeholder="Your email address" /><button type="submit">Subscribe</button></form></div></div>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand"><a href="../index.html" class="logo"><div class="logo-icon">🦍</div><div><div class="logo-text">Swiha Tours</div><div class="logo-sub">& Travel</div></div></a><p>Uganda's premier tour operator since 2012.</p><div class="footer-socials"><div class="social-btn">f</div><div class="social-btn">in</div><div class="social-btn">ig</div></div></div>
+      <div class="footer-col"><h4>Quick Links</h4><ul class="footer-links"><li><a href="../index.html">Home</a></li><li><a href="about.html">About Us</a></li><li><a href="packages.html">Tour Packages</a></li><li><a href="destinations.html">Destinations</a></li><li><a href="gallery.html">Gallery</a></li></ul></div>
+      <div class="footer-col"><h4>Our Tours</h4><ul class="footer-links"><li><a href="packages.html">Gorilla Trekking</a></li><li><a href="packages.html">Wildlife Safaris</a></li><li><a href="packages.html">Bird Watching</a></li></ul></div>
+      <div class="footer-col"><h4>Contact</h4><div class="footer-contact-item"><span class="icon">📞</span><span>+256 700 000 000</span></div><div class="footer-contact-item"><span class="icon">✉</span><span>info@swihatoes.com</span></div></div>
+    </div>
+    <div class="footer-bottom"><p>© 2024 Swiha Tours & Travel. All rights reserved.</p><div class="footer-bottom-links"><a href="#">Privacy Policy</a><a href="#">Terms</a></div></div>
+  </div>
+</footer>
+<a href="https://wa.me/256700000000" class="whatsapp-float">💬</a>
+<button class="back-to-top">↑</button>
+<script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

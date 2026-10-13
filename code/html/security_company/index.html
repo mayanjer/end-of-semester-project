@@ -1,0 +1,88 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome Back - Login</title>
+    <link rel = "stylesheet" href = "css/index.css">
+</head>
+<body>
+    <div class="form-container">
+        
+        <div class="form-panel">
+            <div class="form-wrapper">
+                <div class="form-header">
+                    <h2>Welcome Back</h2>
+                    <p>Please enter your details to sign in.</p>
+                </div>
+
+               <form class="form" id="loginForm" onsubmit="handleLogin(event)">
+                    <div class="input-group">
+                        <label for="email">Email Address</label>
+                        <div class="input-field">
+                            <i class="fa-regular fa-envelope"></i>
+                            <input type="email" id="email" name="email" placeholder="Email" required autocomplete="email">
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <div class="label-row">
+                            <label for="password">Password</label>
+                            <a href="#" class="forgot-password">Forgot password?</a>
+                        </div>
+                        <div class="input-field">
+                            <i class="fa-regular fa-lock"></i>
+                            <input type="password" id="password" name="password" placeholder="••••••••" required autocomplete="current-password">
+                            <button type="button" class="toggle-password" onclick="togglePasswordVisibility()" aria-label="Toggle password visibility">
+                                <i class="fa-regular fa-eye" id="eyeIcon"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    
+                    <button type="submit" class="submit-btn">
+                        <span>Sign In</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+
+                   
+                    <p class="signup-prompt">
+                        Don't have an account? <a href="#">Sign up for free</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('password');
+            const eyeIcon = document.getElementById('eyeIcon');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                eyeIcon.classList.remove('fa-eye');
+                eyeIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                eyeIcon.classList.remove('fa-eye-slash');
+                eyeIcon.classList.add('fa-eye');
+            }
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const btn = document.querySelector('.submit-btn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Signing in...';
+            btn.disabled = true;
+
+            setTimeout(() => {
+                alert('Sign in  successful!');
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }, 1200);
+        }
+    </script>
+</body>
+</html>

@@ -1,88 +1,222 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome Back - Login</title>
-    <link rel = "stylesheet" href = "css/index.css">
+    <title>Lubuya Security Company</title>
+    <style>
+        /* Minimal CSS Embedded in Header */
+        :root {
+            --primary-blue: #1A365D;
+            --accent-blue: #2B6CB0;
+            --light-bg: #F7FAFC;
+            --text-dark: #2D3748;
+            --white: #FFFFFF;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: var(--white);
+            border-bottom: 1px solid #E2E8F0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem 2rem;
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-blue);
+        }
+
+        .hero {
+            background: linear-gradient(135deg, var(--primary-blue), #0F203E);
+            color: var(--white);
+            padding: 6rem 2rem;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 2.75rem;
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+            letter-spacing: -1px;
+        }
+
+        .hero p {
+            font-size: 1.15rem;
+            color: #E2E8F0;
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--accent-blue);
+            color: var(--white);
+            padding: 0.8rem 2rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: background-color 0.2s;
+        }
+
+        .btn:hover {
+            background-color: #23528c;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 5rem 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-bottom: 3rem;
+            letter-spacing: -0.5px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background-color: var(--white);
+            padding: 2.5rem;
+            border-radius: 6px;
+            border: 1px solid #E2E8F0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.04);
+        }
+
+        .card h3 {
+            font-size: 1.25rem;
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+        }
+
+        .card p {
+            color: #4A5568;
+            font-size: 0.95rem;
+        }
+
+        footer {
+            background-color: var(--primary-blue);
+            color: #A0AEC0;
+            text-align: center;
+            padding: 2.5rem 2rem;
+            font-size: 0.9rem;
+        }
+
+        footer p {
+            color: #E2E8F0;
+        }
+    </style>
 </head>
 <body>
-    <div class="form-container">
-        
-        <div class="form-panel">
-            <div class="form-wrapper">
-                <div class="form-header">
-                    <h2>Welcome Back</h2>
-                    <p>Please enter your details to sign in.</p>
-                </div>
 
-               <form class="form" id="loginForm" onsubmit="handleLogin(event)">
-                    <div class="input-group">
-                        <label for="email">Email Address</label>
-                        <div class="input-field">
-                            <i class="fa-regular fa-envelope"></i>
-                            <input type="email" id="email" name="email" placeholder="Email" required autocomplete="email">
-                        </div>
-                    </div>
+    <!-- Header / Navigation -->
+    <header>
+        <div class="nav-container">
+            <div class="logo">Lubuya Security</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </header>
 
-                    <div class="input-group">
-                        <div class="label-row">
-                            <label for="password">Password</label>
-                            <a href="#" class="forgot-password">Forgot password?</a>
-                        </div>
-                        <div class="input-field">
-                            <i class="fa-regular fa-lock"></i>
-                            <input type="password" id="password" name="password" placeholder="••••••••" required autocomplete="current-password">
-                            <button type="button" class="toggle-password" onclick="togglePasswordVisibility()" aria-label="Toggle password visibility">
-                                <i class="fa-regular fa-eye" id="eyeIcon"></i>
-                            </button>
-                        </div>
-                    </div>
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Uncompromising Protection for Your Peace of Mind</h1>
+            <p>Lubuya Security Company delivers trusted, professional, and tailored security solutions for residential, commercial, and institutional properties.</p>
+            <a href="#contact" class="btn">Get a Consultation</a>
+        </div>
+    </section>
 
-                    
-                    <button type="submit" class="submit-btn">
-                        <span>Sign In</span>
-                        <i class="fa-solid fa-arrow-right"></i>
-                    </button>
-
-                   
-                    <p class="signup-prompt">
-                        Don't have an account? <a href="#">Sign up for free</a>
-                    </p>
-                </form>
+    <!-- Services Section -->
+    <section class="container" id="services">
+        <h2 class="section-title">Our Security Services</h2>
+        <div class="services-grid">
+            <div class="card">
+                <h3>Manned Guarding</h3>
+                <p>Highly trained, vetted, and disciplined security personnel deployed to safeguard your premises around the clock.</p>
+            </div>
+            <div class="card">
+                <h3>Electronic Surveillance</h3>
+                <p>State-of-the-art CCTV installation, alarm monitoring systems, and remote access control solutions.</p>
+            </div>
+            <div class="card">
+                <h3>Rapid Response</h3>
+                <p>Quick-reaction tactical units stationed strategically to respond instantly to any security emergencies or threats.</p>
             </div>
         </div>
-    </div>
+    </section>
 
-    <script>
-        function togglePasswordVisibility() {
-            const passwordInput = document.getElementById('password');
-            const eyeIcon = document.getElementById('eyeIcon');
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                eyeIcon.classList.remove('fa-eye');
-                eyeIcon.classList.add('fa-eye-slash');
-            } else {
-                passwordInput.type = 'password';
-                eyeIcon.classList.remove('fa-eye-slash');
-                eyeIcon.classList.add('fa-eye');
-            }
-        }
+    <!-- Footer -->
+    <footer id="contact">
+        <p>&copy; 2026 Lubuya Security Company. All rights reserved.</p>
+    </footer>
 
-        function handleLogin(event) {
-            event.preventDefault();
-            const btn = document.querySelector('.submit-btn');
-            const originalText = btn.innerHTML;
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Signing in...';
-            btn.disabled = true;
-
-            setTimeout(() => {
-                alert('Sign in  successful!');
-                btn.innerHTML = originalText;
-                btn.disabled = false;
-            }, 1200);
-        }
-    </script>
 </body>
 </html>
